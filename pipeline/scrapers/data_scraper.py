@@ -17,7 +17,9 @@ class DataScraper(ABC):
         pass
 
     @abstractmethod
-    def get_daily_ohlc(self, ticker: str, start_date: str, end_date: str) -> List[Dict]:
+    def get_daily_ohlc(
+        self, ticker: str, start_date: str, end_date: str
+    ) -> List[Dict]:
         pass
 
     @abstractmethod

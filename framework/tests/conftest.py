@@ -41,8 +41,20 @@ def global_config():
 @pytest.fixture(scope="module")
 def allocation_table():
     allocation_table = {
-        0: {"A": ft.AllocationEntry({"weight": 0.5, "path": ft.ConfigPath(name="A")})},
-        1: {"A": ft.AllocationEntry({"weight": 0.5, "path": ft.ConfigPath(name="A")})},
-        2: {"A": ft.AllocationEntry({"weight": 0.5, "path": ft.ConfigPath(name="A")})},
+        0: {
+            "A": ft.AllocationEntry(
+                {"weight": 0.5, "path": ft.ConfigPath(name="A")}
+            )
+        },
+        1: {
+            "A": ft.AllocationEntry(
+                {"weight": 0.5, "path": ft.ConfigPath(name="A")}
+            )
+        },
+        2: {
+            "A": ft.AllocationEntry(
+                {"weight": 0.5, "path": ft.ConfigPath(name="A")}
+            )
+        },
     }
     return allocation_table

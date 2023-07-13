@@ -23,7 +23,9 @@ class StrategyBase:
         self.data_processor = data_processor
         self.global_config = global_config
         self.strategy_config = strategy_config
-        self.portfolio_processor = PortfolioProcessor(global_config, strategy_config)
+        self.portfolio_processor = PortfolioProcessor(
+            global_config, strategy_config
+        )
 
     def generate_signals(
         self, timestamp: ft.Timestamp, observed_data: ft.ObservedData
@@ -40,7 +42,9 @@ class StrategyBase:
             "generate_signals() must be implemented in the derived strategy class"
         )
 
-    def get_open_positions_by_asset_class(self) -> Dict[ft.Symbol, ft.Position]:
+    def get_open_positions_by_asset_class(
+        self,
+    ) -> Dict[ft.Symbol, ft.Position]:
         """
         Get the current positions for this strategy.
 

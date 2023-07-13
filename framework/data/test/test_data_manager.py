@@ -11,7 +11,9 @@ GLOBAL_CONFIG = {
     "strategy_configs": [],
     "data_providers": {
         ft.AssetClass.US_EQUITY: {
-            ft.DataType.DAILY_OHLC: {ft.DataProviderName.YAHOO: ft.DataType.DAILY_OHLC}
+            ft.DataType.DAILY_OHLC: {
+                ft.DataProviderName.YAHOO: ft.DataType.DAILY_OHLC
+            }
         }
     },
     "db_connections": {ft.DataProviderName.YAHOO: "csv"},
@@ -21,7 +23,9 @@ GLOBAL_CONFIG = {
     "run_start_date": "2021-01-01",
     "run_end_date": "2021-01-05",
     "max_cores": 1,
-    "calendar": ft.TradingCalendar("2000-01-1", "2023-03-01", "00:00:00", "NYSE"),
+    "calendar": ft.TradingCalendar(
+        "2000-01-1", "2023-03-01", "00:00:00", "NYSE"
+    ),
     "delta_to_close_timestamp": "00:00:00",
     "observed_data_lookback": "30_days",
     "future_data_lookahead": "30_days",
@@ -70,7 +74,9 @@ def test_fetch_data(data_manager):
     symbol = ft.Symbol("AAPL")
     db_connection = "csv"
 
-    result = data_manager._fetch_data(data_type, provider_name, symbol, db_connection)
+    result = data_manager._fetch_data(
+        data_type, provider_name, symbol, db_connection
+    )
 
     assert isinstance(result, pd.DataFrame)
 

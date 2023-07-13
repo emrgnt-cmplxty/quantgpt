@@ -3,7 +3,10 @@ import datetime
 import pytest
 
 from ..ft_calendar import TradingCalendar
-from ..untyped_utils import convert_dt_to_est_fixed_time, convert_est_dt_to_unix_timestamp
+from ..untyped_utils import (
+    convert_dt_to_est_fixed_time,
+    convert_est_dt_to_unix_timestamp,
+)
 
 
 @pytest.fixture
@@ -22,9 +25,15 @@ def test_nearest(calendar_instance):
     query_timestamp = convert_est_dt_to_unix_timestamp(
         convert_dt_to_est_fixed_time(datetime.datetime(2023, 1, 5, 12))
     )
-    nearest_before = calendar_instance.nearest(query_timestamp, direction="before")
-    nearest_after = calendar_instance.nearest(query_timestamp, direction="after")
-    nearest_overall = calendar_instance.nearest(query_timestamp, direction="nearest")
+    nearest_before = calendar_instance.nearest(
+        query_timestamp, direction="before"
+    )
+    nearest_after = calendar_instance.nearest(
+        query_timestamp, direction="after"
+    )
+    nearest_overall = calendar_instance.nearest(
+        query_timestamp, direction="nearest"
+    )
 
     assert nearest_before == convert_est_dt_to_unix_timestamp(
         convert_dt_to_est_fixed_time(datetime.datetime(2023, 1, 5))
@@ -41,9 +50,15 @@ def test_nearest_2(calendar_instance):
     query_timestamp = convert_est_dt_to_unix_timestamp(
         convert_dt_to_est_fixed_time(datetime.datetime(2023, 1, 5, 13))
     )
-    nearest_before = calendar_instance.nearest(query_timestamp, direction="before")
-    nearest_after = calendar_instance.nearest(query_timestamp, direction="after")
-    nearest_overall = calendar_instance.nearest(query_timestamp, direction="nearest")
+    nearest_before = calendar_instance.nearest(
+        query_timestamp, direction="before"
+    )
+    nearest_after = calendar_instance.nearest(
+        query_timestamp, direction="after"
+    )
+    nearest_overall = calendar_instance.nearest(
+        query_timestamp, direction="nearest"
+    )
 
     assert nearest_before == convert_est_dt_to_unix_timestamp(
         convert_dt_to_est_fixed_time(datetime.datetime(2023, 1, 5))

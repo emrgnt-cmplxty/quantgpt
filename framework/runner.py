@@ -3,7 +3,10 @@ import time
 from typing import Any, Dict, List, Tuple
 
 from financial_tools import types as ft
-from financial_tools.utils import convert_time_delta_str, convert_timestamp_to_est_datetime
+from financial_tools.utils import (
+    convert_time_delta_str,
+    convert_timestamp_to_est_datetime,
+)
 
 from .data.processor import DataProcessor
 from .performance.manager import PerformanceManager
@@ -54,7 +57,9 @@ class Mode:
 
     def run(self) -> None:
         """Abstract method for running the mode. Must be implemented in derived classes."""
-        raise NotImplementedError("run() must be implemented in the derived mode class")
+        raise NotImplementedError(
+            "run() must be implemented in the derived mode class"
+        )
 
     def save(self) -> None:
         """Save the state of each strategy."""
@@ -75,7 +80,10 @@ class BacktestMode(Mode):
 
         for timestamp_data in self.data_processor.iter_data():
             self._process_timestamp(timestamp_data)
-        logger.info("The process timers for the BacktestMode logic read = ", self.process_timers)
+        logger.info(
+            "The process timers for the BacktestMode logic read = ",
+            self.process_timers,
+        )
 
     def _process_timestamp(
         self,
@@ -90,7 +98,13 @@ class BacktestMode(Mode):
         """Process a single timestamp during backtesting."""
         run_start = time.time()
 
-        timestamp, next_timestamp, observed_data, mock_live_data, future_data = timestamp_data
+        (
+            timestamp,
+            next_timestamp,
+            observed_data,
+            mock_live_data,
+            future_data,
+        ) = timestamp_data
         logging.info(
             "Processing Timestamp: %s Which Corresponds to EST time %s",
             timestamp,
@@ -101,7 +115,11 @@ class BacktestMode(Mode):
         # self._check_live_data(mock_live_data)
         # self._check_future_data(timestamp, future_data)
 
-        logging.debug("On Timestamp %s, the mock_live_data is: %s", timestamp, mock_live_data)
+        logging.debug(
+            "On Timestamp %s, the mock_live_data is: %s",
+            timestamp,
+            mock_live_data,
+        )
         now = time.time()
         signals_by_strategy = self._process_signals(timestamp, observed_data)
         self.process_timers["process_signals"] += time.time() - now
@@ -113,7 +131,9 @@ class BacktestMode(Mode):
         self.process_timers["process_strategies"] += time.time() - now
 
         now = time.time()
-        self.portfolio_manager.update(timestamp, trades_by_strategy, positions_by_strategy)
+        self.portfolio_manager.update(
+            timestamp, trades_by_strategy, positions_by_strategy
+        )
         self.process_timers["portfolio_manager.update"] += time.time() - now
 
         now = time.time()
@@ -128,10 +148,14 @@ class BacktestMode(Mode):
     ) -> List[Tuple[StrategyType, ft.StrategyName, List[ft.Signal]]]:
         """Generate signals for each strategy at the current timestamp."""
 
-        signals_by_strategy: List[Tuple[StrategyType, ft.StrategyName, List[ft.Signal]]] = []
+        signals_by_strategy: List[
+            Tuple[StrategyType, ft.StrategyName, List[ft.Signal]]
+        ] = []
 
         if timestamp not in self.allocation_table:
-            raise ValueError("The allocation_table must contain an entry for every day.")
+            raise ValueError(
+                "The allocation_table must contain an entry for every day."
+            )
 
         for strategy in self.strategies:
             strategy_name = strategy.strategy_config["table_name"]
@@ -147,7 +171,9 @@ class BacktestMode(Mode):
         self,
         timestamp: ft.Timestamp,
         mock_live_data: ft.LiveData,
-        signals_by_strategy: List[Tuple[StrategyType, ft.StrategyName, List[ft.Signal]]],
+        signals_by_strategy: List[
+            Tuple[StrategyType, ft.StrategyName, List[ft.Signal]]
+        ],
     ) -> Tuple[
         List[Tuple[ft.StrategyName, List[ft.Trade]]],
         List[Tuple[ft.StrategyName, List[ft.Position]]],
@@ -155,7 +181,9 @@ class BacktestMode(Mode):
         """Process signals for each strategy and return trades and positions."""
 
         trades_by_strategy: List[Tuple[ft.StrategyName, List[ft.Trade]]] = []
-        positions_by_strategy: List[Tuple[ft.StrategyName, List[ft.Position]]] = []
+        positions_by_strategy: List[
+            Tuple[ft.StrategyName, List[ft.Position]]
+        ] = []
 
         for strategy, strategy_name, signals in signals_by_strategy:
             trades, positions = self._execute_signals_and_update_positions(
@@ -175,7 +203,9 @@ class BacktestMode(Mode):
     ) -> Tuple[List[Any], List[Any]]:
         """Execute the signals, process trades, and update positions for the current strategy."""
 
-        weight = self.allocation_table[timestamp][strategy.strategy_config["table_name"]]["weight"]
+        weight = self.allocation_table[timestamp][
+            strategy.strategy_config["table_name"]
+        ]["weight"]
         trades = strategy.portfolio_processor.execute_trades(
             timestamp, mock_live_data, signals, weight
         )
@@ -199,7 +229,9 @@ class BacktestMode(Mode):
             raise ValueError("The observed data must not be empty.")
         for asset_type in observed_data:
             if not observed_data[asset_type]:
-                raise ValueError(f"The observed data for {asset_type} must not be empty.")
+                raise ValueError(
+                    f"The observed data for {asset_type} must not be empty."
+                )
             for data_type in observed_data[asset_type]:
                 if not observed_data[asset_type][data_type]:
                     logger.warning(
@@ -207,7 +239,9 @@ class BacktestMode(Mode):
                     )
                 for symbol in observed_data[asset_type][data_type]:
                     if data_type == ft.DataType.DAILY_OHLC:
-                        observed_data_symbol = observed_data[asset_type][data_type][symbol]
+                        observed_data_symbol = observed_data[asset_type][
+                            data_type
+                        ][symbol]
                         observed_length = len(observed_data_symbol)
                         if len(observed_data_symbol) != expected_length:
                             logger.warning(
@@ -217,7 +251,9 @@ class BacktestMode(Mode):
     def _check_live_data(self, mock_live_data: ft.LiveData) -> None:
         pass
 
-    def _check_future_data(self, timestamp: ft.Timestamp, future_data: ft.FutureData) -> None:
+    def _check_future_data(
+        self, timestamp: ft.Timestamp, future_data: ft.FutureData
+    ) -> None:
         """
         Check that the observed data is not empty.
 
@@ -231,20 +267,32 @@ class BacktestMode(Mode):
             raise ValueError("The future data must not be empty.")
         for asset_type in future_data:
             if not future_data[asset_type]:
-                raise ValueError(f"The future data for {asset_type} must not be empty.")
+                raise ValueError(
+                    f"The future data for {asset_type} must not be empty."
+                )
             for data_type in future_data[asset_type]:
                 if not future_data[asset_type][data_type]:
-                    logger.warning(f"The future data for {asset_type} and {data_type} was empty.")
+                    logger.warning(
+                        f"The future data for {asset_type} and {data_type} was empty."
+                    )
                 for symbol in future_data[asset_type][data_type]:
                     if data_type == ft.DataType.DAILY_OHLC:
-                        observed_data_symbol = future_data[asset_type][data_type][symbol]
-                        observed_timestamp = observed_data_symbol["Timestamp"][0]
+                        observed_data_symbol = future_data[asset_type][
+                            data_type
+                        ][symbol]
+                        observed_timestamp = observed_data_symbol["Timestamp"][
+                            0
+                        ]
                         observed_future_data_length = int(
                             convert_time_delta_str(
-                                self.global_config["future_data_lookahead"], "to_days"
+                                self.global_config["future_data_lookahead"],
+                                "to_days",
                             )
                         )
-                        if observed_future_data_length != expected_future_length:
+                        if (
+                            observed_future_data_length
+                            != expected_future_length
+                        ):
                             logger.warning(
                                 f"The future data for {symbol} was legnth {observed_future_data_length} instead of {expected_future_length}. This could be due to delisting."
                             )

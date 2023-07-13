@@ -3,7 +3,11 @@ from enum import Enum
 from typing import Any
 
 from ..constants import ANNUALIZATION_FACTOR  # noqa: F401
-from ..constants import RISK_FREE_RATE, SECONDS_IN_DAY, SECONDS_IN_MINUTE  # noqa: F401
+from ..constants import (
+    RISK_FREE_RATE,
+    SECONDS_IN_DAY,
+    SECONDS_IN_MINUTE,
+)  # noqa: F401
 from ..ft_calendar import TradingCalendar  # noqa: F401
 from .advanced_types import AllocationConfig  # noqa: F401
 from .advanced_types import AllocationEntry  # noqa: F401
@@ -58,7 +62,8 @@ class EnumEncoder(json.JSONEncoder):
 def prepare_json_for_dump(obj: Any) -> Any:
     if isinstance(obj, dict):
         return {
-            prepare_json_for_dump(key): prepare_json_for_dump(value) for key, value in obj.items()
+            prepare_json_for_dump(key): prepare_json_for_dump(value)
+            for key, value in obj.items()
         }
     elif isinstance(obj, list):
         return [prepare_json_for_dump(value) for value in obj]

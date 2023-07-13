@@ -26,9 +26,13 @@ logger = logging.getLogger(__name__)
 # This is intentional, as the close timestamp from the previous day
 # will be used in strategies, and we send data back to the previous day
 # when it is observed before the T+1 Open
-def map_to_appropriate_market_close_unix(timestamp_str: str, calendar: ft.TradingCalendar) -> int:
+def map_to_appropriate_market_close_unix(
+    timestamp_str: str, calendar: ft.TradingCalendar
+) -> int:
     # Convert the timestamp string to a datetime object
-    dt = convert_dt_to_est_fixed_time(convert_datestr_to_datetime(timestamp_str))
+    dt = convert_dt_to_est_fixed_time(
+        convert_datestr_to_datetime(timestamp_str)
+    )
     # Check if the time is before 9:30 AM
     if dt.time() < datetime.strptime("9:30", "%H:%M").time():
         # If it's before 9:30 AM, set the datetime object to the previous day
@@ -49,28 +53,40 @@ class BiopharmCatalystDataScraper(DataScraper):
         self.driver_path = driver_path
         self.is_test_mode = is_test_mode
         self.test_tickers = data_handler.other_settings["test_tickers"]
-        self.news_data_mapping = data_handler.other_settings["news_data_mapping"]
+        self.news_data_mapping = data_handler.other_settings[
+            "news_data_mapping"
+        ]
         self.max_pages = data_handler.other_settings["max_pages"]
 
         options = webdriver.ChromeOptions()
-        self.driver = webdriver.Chrome(executable_path=driver_path, options=options)
+        self.driver = webdriver.Chrome(
+            executable_path=driver_path, options=options
+        )
         self.calendar = ft.TradingCalendar(
-            "2000-01-1", datetime.now().strftime("%Y-%m-%d"), "00:00:00", "NYSE"
+            "2000-01-1",
+            datetime.now().strftime("%Y-%m-%d"),
+            "00:00:00",
+            "NYSE",
         )
 
     def get_tickers(self):
         if self.is_test_mode:
             return self.test_tickers
         symbols = [
-            {"Symbol": ele.value} for ele in build_symbols(ft.AssetClass.US_EQUITY, "biotech")
+            {"Symbol": ele.value}
+            for ele in build_symbols(ft.AssetClass.US_EQUITY, "biotech")
         ]
         return symbols
 
     def get_news(self, ticker, page=0):
-        self.driver.get(f"https://www.biopharmcatalyst.com/api/news/{ticker}?page={page}")
+        self.driver.get(
+            f"https://www.biopharmcatalyst.com/api/news/{ticker}?page={page}"
+        )
         u = self.driver.page_source
         try:
-            v = "{" + "{".join(u.split("{")[1:]).replace("""</pre></body></html>""", "")
+            v = "{" + "{".join(u.split("{")[1:]).replace(
+                """</pre></body></html>""", ""
+            )
             v = json.loads(v)
             return v["data"]["news"]["data"]
         except Exception as e:
@@ -79,10 +95,14 @@ class BiopharmCatalystDataScraper(DataScraper):
             return []
 
     def get_daily_ohlc(self, *args, **kwargs) -> List[Dict]:
-        raise NotImplementedError("get_daily_ohlc is not implemented for NewsDataScraper")
+        raise NotImplementedError(
+            "get_daily_ohlc is not implemented for NewsDataScraper"
+        )
 
     def get_financials(self, *args, **kwargs) -> List[Dict]:
-        raise NotImplementedError("get_financials is not implemented for NewsDataScraper")
+        raise NotImplementedError(
+            "get_financials is not implemented for NewsDataScraper"
+        )
 
     def remove_html_tags(self, text) -> str:
         clean = re.compile("<.*?>")
@@ -105,22 +125,39 @@ class BiopharmCatalystDataScraper(DataScraper):
                             release_dict: Dict[str, Union[str, Any]] = {}
                             for key, value in release.items():
                                 if key == "data":
-                                    data_dict = ast.literal_eval(str(release[key]))
-                                    for sub_key, sub_value in data_dict.items():
+                                    data_dict = ast.literal_eval(
+                                        str(release[key])
+                                    )
+                                    for (
+                                        sub_key,
+                                        sub_value,
+                                    ) in data_dict.items():
                                         if sub_key == "body":
-                                            soup = BeautifulSoup(sub_value, "lxml")
-                                            raw_text = soup.get_text(separator="\n")
-                                            raw_text = self.remove_html_tags(raw_text)
+                                            soup = BeautifulSoup(
+                                                sub_value, "lxml"
+                                            )
+                                            raw_text = soup.get_text(
+                                                separator="\n"
+                                            )
+                                            raw_text = self.remove_html_tags(
+                                                raw_text
+                                            )
                                             release_dict[
-                                                self.news_data_mapping[f"sub_{sub_key}"]
+                                                self.news_data_mapping[
+                                                    f"sub_{sub_key}"
+                                                ]
                                             ] = raw_text
 
                                         else:
                                             release_dict[
-                                                self.news_data_mapping[f"sub_{sub_key}"]
+                                                self.news_data_mapping[
+                                                    f"sub_{sub_key}"
+                                                ]
                                             ] = sub_value
                                 else:
-                                    release_dict[self.news_data_mapping[key]] = value
+                                    release_dict[
+                                        self.news_data_mapping[key]
+                                    ] = value
                             release_dict[
                                 "MappedCloseTimestamp"
                             ] = map_to_appropriate_market_close_unix(

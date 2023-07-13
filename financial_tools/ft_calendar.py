@@ -6,7 +6,10 @@ from typing import List
 import pandas_market_calendars as mcal
 
 from .types.basic_types import Timestamp
-from .untyped_utils import convert_dt_to_est_fixed_time, convert_est_dt_to_unix_timestamp
+from .untyped_utils import (
+    convert_dt_to_est_fixed_time,
+    convert_est_dt_to_unix_timestamp,
+)
 
 
 class TradingCalendar:
@@ -19,7 +22,9 @@ class TradingCalendar:
         freq="D",
     ):
         calendar = mcal.get_calendar(calendar_name)
-        calendar_dates = calendar.valid_days(start_date=data_start_date, end_date=data_end_date)
+        calendar_dates = calendar.valid_days(
+            start_date=data_start_date, end_date=data_end_date
+        )
 
         hours, minutes, seconds = map(int, delta_to_close_timestamp.split(":"))
         # We add the delta to close timestamp to the market close time to get the timestamp
@@ -44,7 +49,9 @@ class TradingCalendar:
         if self.freq is not None:
             return self.freq
         else:
-            raise NotImplementedError("Only daily frequency is currently supported.")
+            raise NotImplementedError(
+                "Only daily frequency is currently supported."
+            )
 
     def nearest(self, timestamp: Timestamp, direction="nearest") -> Timestamp:
         index = bisect.bisect_left(self.timestamps, timestamp)
@@ -68,9 +75,13 @@ class TradingCalendar:
             else:
                 return before
         else:
-            raise ValueError("Invalid direction specified. Use 'before', 'after', or 'nearest'.")
+            raise ValueError(
+                "Invalid direction specified. Use 'before', 'after', or 'nearest'."
+            )
 
-    def range_search(self, start: Timestamp, end: Timestamp) -> List[Timestamp]:
+    def range_search(
+        self, start: Timestamp, end: Timestamp
+    ) -> List[Timestamp]:
         start_index = bisect.bisect_left(self.timestamps, start)
         end_index = bisect.bisect_right(self.timestamps, end)
         return self.timestamps[start_index:end_index]
@@ -78,10 +89,15 @@ class TradingCalendar:
     def add_timestamp(self, timestamp: Timestamp) -> None:
         index = bisect.bisect_left(self.timestamps, timestamp)
         if index > 0 and index < len(self.timestamps):
-            if self.timestamps[index] - timestamp == timestamp - self.timestamps[index - 1]:
+            if (
+                self.timestamps[index] - timestamp
+                == timestamp - self.timestamps[index - 1]
+            ):
                 bisect.insort(self.timestamps, timestamp)
             else:
-                raise ValueError("Adding this timestamp would violate uniform sampling.")
+                raise ValueError(
+                    "Adding this timestamp would violate uniform sampling."
+                )
         else:
             raise ValueError(
                 "Adding this timestamp is not supported at the edges of the calendar."
@@ -89,7 +105,10 @@ class TradingCalendar:
 
     def remove_timestamp(self, timestamp: Timestamp) -> None:
         index = bisect.bisect_left(self.timestamps, timestamp)
-        if index < len(self.timestamps) and self.timestamps[index] == timestamp:
+        if (
+            index < len(self.timestamps)
+            and self.timestamps[index] == timestamp
+        ):
             self.timestamps.pop(index)
         else:
             raise ValueError("Timestamp not found in calendar.")

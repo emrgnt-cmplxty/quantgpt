@@ -27,7 +27,9 @@ class DataHandler:
 
     def _read_jsonc_file(self):
         with open(self.jsonc_file, "r") as file:
-            content = "".join([line for line in file if not line.strip().startswith("//")])
+            content = "".join(
+                [line for line in file if not line.strip().startswith("//")]
+            )
             config = json.loads(content)
 
         self.csv_dir = config.get("csv_dir")
@@ -55,7 +57,9 @@ class DataHandler:
         if self.mode == "db":
             raise NotImplementedError("Database mode is not implemented yet")
         elif self.mode == "csv":
-            self._save_to_csv(file_name_prefix, data, data_type, is_test_mode, column_map)
+            self._save_to_csv(
+                file_name_prefix, data, data_type, is_test_mode, column_map
+            )
 
     # Note, the commented method has not been tested and was generated algorithmically as part of set-up
     def _save_to_db(self, file_name_prefix: str, data: List[Dict]):
@@ -88,7 +92,9 @@ class DataHandler:
         else:
             csv_file = os.path.join(
                 csv_file,
-                f"test_{file_name_prefix}.csv" if is_test_mode else f"{file_name_prefix}.csv",
+                f"test_{file_name_prefix}.csv"
+                if is_test_mode
+                else f"{file_name_prefix}.csv",
             )
 
         # Create path if it does not yet exist

@@ -17,7 +17,9 @@ def mock_setup_argparse(mocker):
         end="2022-10-01",
         log_level="INFO",
     )
-    mocker.patch("framework.setup_argparse.setup_argparse", return_value=mock_namespace)
+    mocker.patch(
+        "framework.setup_argparse.setup_argparse", return_value=mock_namespace
+    )
     return mock_namespace
 
 
@@ -63,11 +65,17 @@ def test_main_function(mock_setup_argparse, mocker):
     main(mock_setup_argparse)
 
     # Assert the expected methods are called with the proper arguments
-    framework.main.ConfigBuilder.assert_called_once_with(mock_setup_argparse, mocker.ANY)
-    framework.main.DataProcessor.assert_called_once_with(mocker.ANY, mocker.ANY)
+    framework.main.ConfigBuilder.assert_called_once_with(
+        mock_setup_argparse, mocker.ANY
+    )
+    framework.main.DataProcessor.assert_called_once_with(
+        mocker.ANY, mocker.ANY
+    )
     framework.main.PortfolioManager.assert_called_once_with(mocker.ANY)
     framework.main.PerformanceManager.assert_called_once_with(mocker.ANY)
-    framework.main.PerformancePlotter.assert_called_once_with(mock_performance_manager)
+    framework.main.PerformancePlotter.assert_called_once_with(
+        mock_performance_manager
+    )
     framework.main.BacktestMode.assert_called_once_with(
         {
             "mode": ft.TradingMode.BACKTEST,

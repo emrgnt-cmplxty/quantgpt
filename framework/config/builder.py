@@ -20,9 +20,13 @@ class ConfigBuilder:
     def __init__(self, args: argparse.Namespace, logger: logging.Logger):
         self.args = args
         self.logger = logger
-        self.allocation_table: Dict[ft.Timestamp, Dict[ft.StrategyName, ft.AllocationEntry]] = {}
+        self.allocation_table: Dict[
+            ft.Timestamp, Dict[ft.StrategyName, ft.AllocationEntry]
+        ] = {}
 
-    def generate_allocation_table(self, strategy_config_list: List[ft.Config]) -> None:
+    def generate_allocation_table(
+        self, strategy_config_list: List[ft.Config]
+    ) -> None:
         """
         Generates a new allocation table based on the global config
         """
@@ -35,14 +39,18 @@ class ConfigBuilder:
         # Loop through all dates from run_start_date to just before run_end_date
         current_date = run_start_date
         while current_date < run_end_date:
-            allocation_table_at_date: Dict[ft.StrategyName, ft.AllocationEntry] = {}
+            allocation_table_at_date: Dict[
+                ft.StrategyName, ft.AllocationEntry
+            ] = {}
 
             # Loop through all strategies
             for strategy_config in strategy_config_list:
                 config_path: ft.ConfigPath = self._build_config_path(
                     cast(ft.Config, strategy_config["config_path"])
                 )
-                allocation_table_at_date[config_path.path["name"]] = ft.AllocationEntry(
+                allocation_table_at_date[
+                    config_path.path["name"]
+                ] = ft.AllocationEntry(
                     {
                         "weight": cast(float, strategy_config["weight"]),
                         "path": config_path,
@@ -50,12 +58,17 @@ class ConfigBuilder:
                 )
 
             hours, minutes, seconds = (
-                int(ele) for ele in str(self.delta_to_close_timestamp).split(":")
+                int(ele)
+                for ele in str(self.delta_to_close_timestamp).split(":")
             )
             allocation_table_by_timestamps[
                 convert_est_dt_to_unix_timestamp(
                     current_date
-                    + timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+                    + timedelta(
+                        hours=int(hours),
+                        minutes=int(minutes),
+                        seconds=int(seconds),
+                    )
                 )
             ] = allocation_table_at_date
 
@@ -74,7 +87,9 @@ class ConfigBuilder:
         """
         allocation_table_by_timestamps = {}
         for date in self.allocation_config:
-            allocation_table_at_date: Dict[ft.StrategyName, ft.AllocationEntry] = {}
+            allocation_table_at_date: Dict[
+                ft.StrategyName, ft.AllocationEntry
+            ] = {}
             for daily_allocation in self.allocation_config[date]:
                 for strategy, values in daily_allocation.items():
                     config_path: ft.ConfigPath = self._build_config_path(
@@ -85,14 +100,19 @@ class ConfigBuilder:
                     )
 
             hours, minutes, seconds = (
-                int(ele) for ele in str(self.delta_to_close_timestamp).split(":")
+                int(ele)
+                for ele in str(self.delta_to_close_timestamp).split(":")
             )
             # To load the allocation table properly we must map the midnight start time to the
             # market open time, which is done by adding hours and minutes to the date.
             allocation_table_by_timestamps[
                 convert_est_dt_to_unix_timestamp(
                     convert_datestr_to_datetime(date)
-                    + timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+                    + timedelta(
+                        hours=int(hours),
+                        minutes=int(minutes),
+                        seconds=int(seconds),
+                    )
                 )
             ] = allocation_table_at_date
 
@@ -116,10 +136,16 @@ class ConfigBuilder:
             name="_".join(config_path_args[4:]),
         )
         global_config_loader: ft.Config = load_config(global_config_path)
-        self.delta_to_close_timestamp = global_config_loader["delta_to_close_timestamp"]
-        generate_unit_allocation = global_config_loader.get("generate_unit_allocation", False)
+        self.delta_to_close_timestamp = global_config_loader[
+            "delta_to_close_timestamp"
+        ]
+        generate_unit_allocation = global_config_loader.get(
+            "generate_unit_allocation", False
+        )
         if not generate_unit_allocation:
-            config_path_args = cast(ft.ConfigPathDict, global_config_loader["allocation_config"])
+            config_path_args = cast(
+                ft.ConfigPathDict, global_config_loader["allocation_config"]
+            )
 
             allocation_config_path = ft.ConfigPath(**config_path_args)
             allocation_config_loader = load_config(allocation_config_path)
@@ -135,9 +161,15 @@ class ConfigBuilder:
                     "Please set only one of these flags to True."
                 )
             strategy_config_list = global_config_loader["strategy_config_list"]
-            self.generate_allocation_table(cast(List[ft.Config], strategy_config_list))
+            self.generate_allocation_table(
+                cast(List[ft.Config], strategy_config_list)
+            )
 
-        strategy_configs, symbols_dict, providers_dict = self.load_configurations()
+        (
+            strategy_configs,
+            symbols_dict,
+            providers_dict,
+        ) = self.load_configurations()
 
         db_connections: Dict[ft.DataProviderName, ft.DBConnections] = {
             ft.DataProviderName(key): ft.DBConnections(value)
@@ -162,7 +194,11 @@ class ConfigBuilder:
 
         data_end_date = (
             convert_datestr_to_datetime(self.args.end)
-            + timedelta(seconds=convert_time_delta_str(cast(str, self.args.data_lookahead_days)))
+            + timedelta(
+                seconds=convert_time_delta_str(
+                    cast(str, self.args.data_lookahead_days)
+                )
+            )
         ).strftime("%Y-%m-%d")
 
         calendar = ft.TradingCalendar(
@@ -173,20 +209,26 @@ class ConfigBuilder:
         )
         return ft.GlobalConfig(
             mode=ft.TradingMode(self.args.mode),
-            trading_times=ft.TradingTimes(global_config_loader["trading_times"]),
+            trading_times=ft.TradingTimes(
+                global_config_loader["trading_times"]
+            ),
             data_start_date=str(data_start_date),
             data_end_date=str(data_end_date),
             run_start_date=str(self.args.start),
             run_end_date=str(self.args.end),
             name=str(global_config_path.get_name()),
-            delta_to_close_timestamp=str(global_config_loader["delta_to_close_timestamp"]),
+            delta_to_close_timestamp=str(
+                global_config_loader["delta_to_close_timestamp"]
+            ),
             allocation_table=self.allocation_table,
             strategy_configs=strategy_configs,
             symbols=symbols_dict,
             data_providers=providers_dict,
             max_cores=cast(int, global_config_loader["max_cores"]),
             db_connections=db_connections,
-            observed_data_lookback=str(global_config_loader["observed_data_lookback"]),
+            observed_data_lookback=str(
+                global_config_loader["observed_data_lookback"]
+            ),
             future_data_lookahead=str(self.args.future_data_lookahead),
             calendar=calendar,
         )
@@ -214,13 +256,17 @@ class ConfigBuilder:
 
         # Get strategy_table_names from the first timestamp
         first_timestamp = next(iter(self.allocation_table))
-        initial_strategy_table_names = set(self.allocation_table[first_timestamp].keys())
+        initial_strategy_table_names = set(
+            self.allocation_table[first_timestamp].keys()
+        )
 
         for timestamp, strategy_configs_ts in self.allocation_table.items():
             strategy_table_names = set(strategy_configs_ts.keys())
             for strategy_table_name in strategy_configs_ts:
                 if strategy_table_names != initial_strategy_table_names:
-                    raise ValueError(f"Inconsistent strategy_table_names at timestamp {timestamp}")
+                    raise ValueError(
+                        f"Inconsistent strategy_table_names at timestamp {timestamp}"
+                    )
 
                 allocation_entry = strategy_configs_ts[strategy_table_name]
 
@@ -229,20 +275,30 @@ class ConfigBuilder:
                     continue
 
                 loaded_strategy_configs.add(allocation_entry["path"].get())
-                self.logger.info(f"Loading strategy config {strategy_table_name}")
+                self.logger.info(
+                    f"Loading strategy config {strategy_table_name}"
+                )
 
                 loaded_config = load_config(allocation_entry["path"])
                 loaded_config["table_name"] = strategy_table_name
-                loaded_config["config_name"] = allocation_entry["path"].get_name()
+                loaded_config["config_name"] = allocation_entry[
+                    "path"
+                ].get_name()
 
                 def process_strategy_config(
                     loaded_config: ft.Config,
                 ) -> ft.StrategyConfig:
-                    data_providers: Dict = cast(Dict, loaded_config["data_providers"])
+                    data_providers: Dict = cast(
+                        Dict, loaded_config["data_providers"]
+                    )
                     for data_source in data_providers:
-                        data_source["asset_class"] = ft.AssetClass(data_source["asset_class"])
+                        data_source["asset_class"] = ft.AssetClass(
+                            data_source["asset_class"]
+                        )
 
-                    symbol_sources: Dict = cast(Dict, loaded_config["symbol_sources"])
+                    symbol_sources: Dict = cast(
+                        Dict, loaded_config["symbol_sources"]
+                    )
                     for symbol_provider in symbol_sources:
                         symbol_provider["asset_class"] = ft.AssetClass(
                             symbol_provider["asset_class"]
@@ -252,12 +308,12 @@ class ConfigBuilder:
                     trade_config_keys = list(trade_config.keys()).copy()
                     for key in trade_config_keys:
                         if ft.AssetClass.is_valid(key):
-                            trade_config["by_asset_class"][ft.AssetClass(key)] = trade_config.pop(
-                                key
-                            )
-                            trade_type_def = trade_config["by_asset_class"][ft.AssetClass(key)][
-                                "type"
-                            ]
+                            trade_config["by_asset_class"][
+                                ft.AssetClass(key)
+                            ] = trade_config.pop(key)
+                            trade_type_def = trade_config["by_asset_class"][
+                                ft.AssetClass(key)
+                            ]["type"]
                             trade_config["by_asset_class"][ft.AssetClass(key)][
                                 "type"
                             ] = ft.TradeType(trade_type_def)
@@ -268,8 +324,12 @@ class ConfigBuilder:
 
                 for data_source in strategy_config["data_providers"]:
                     asset_class: ft.AssetClass = data_source["asset_class"]
-                    data_type: ft.DataType = ft.DataType(data_source["data_type"])
-                    source: ft.DataProviderName = ft.DataProviderName(data_source["provider"])
+                    data_type: ft.DataType = ft.DataType(
+                        data_source["data_type"]
+                    )
+                    source: ft.DataProviderName = ft.DataProviderName(
+                        data_source["provider"]
+                    )
 
                     loaded_sources[asset_class][data_type].add(source)
 
@@ -279,16 +339,22 @@ class ConfigBuilder:
                         symbol_provider["sub_class"],
                     )
                     for result in fetched_symbols:
-                        loaded_symbols[symbol_provider["asset_class"]].add(result)
+                        loaded_symbols[symbol_provider["asset_class"]].add(
+                            result
+                        )
 
                 strategy_configs[strategy_table_name] = strategy_config
         symbols_dict: Dict[ft.AssetClass, List[ft.Symbol]] = {
-            asset_class: list(symbols) for asset_class, symbols in loaded_symbols.items()
+            asset_class: list(symbols)
+            for asset_class, symbols in loaded_symbols.items()
         }
 
-        providers_dict: Dict[ft.AssetClass, Dict[ft.DataType, List[ft.DataProviderName]]] = {
+        providers_dict: Dict[
+            ft.AssetClass, Dict[ft.DataType, List[ft.DataProviderName]]
+        ] = {
             asset_class: {
-                data_type: list(sources) for data_type, sources in asset_data_sources.items()
+                data_type: list(sources)
+                for data_type, sources in asset_data_sources.items()
             }
             for asset_class, asset_data_sources in loaded_sources.items()
         }

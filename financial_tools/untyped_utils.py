@@ -57,13 +57,17 @@ def convert_datestr_to_datetime(date_str: str) -> datetime:
         except ValueError:
             pass
 
-    raise ValueError(f"Failed to parse date string {date_str} using available formats")
+    raise ValueError(
+        f"Failed to parse date string {date_str} using available formats"
+    )
 
 
 # Assumes date_str is in EST
 def convert_est_datestr_to_unix_timestamp(date_str: str) -> int:
     # """Converts date_str (YYYY-MM-DD) to datetime object."""
-    return convert_est_dt_to_unix_timestamp(convert_datestr_to_datetime(date_str))
+    return convert_est_dt_to_unix_timestamp(
+        convert_datestr_to_datetime(date_str)
+    )
 
 
 def convert_est_dt_to_unix_timestamp(dt_eastern: datetime) -> int:
@@ -75,7 +79,9 @@ def convert_est_dt_to_unix_timestamp(dt_eastern: datetime) -> int:
         int: Timestamp in UTC.
     """
     dt_eastern = (
-        convert_dt_to_est_fixed_time(dt_eastern) if dt_eastern.tzinfo is None else dt_eastern
+        convert_dt_to_est_fixed_time(dt_eastern)
+        if dt_eastern.tzinfo is None
+        else dt_eastern
     )
     return int(dt_eastern.astimezone(pytz.utc).timestamp())
 
@@ -94,10 +100,14 @@ def convert_timestamp_to_est_datetime(timestamp: int) -> datetime:
     Returns:
         datetime: Datetime object in EST.
     """
-    return datetime.utcfromtimestamp(timestamp).astimezone(pytz.timezone("US/Eastern"))
+    return datetime.utcfromtimestamp(timestamp).astimezone(
+        pytz.timezone("US/Eastern")
+    )
 
 
-def convert_time_delta_str(holding_period: str, conversion_type: str = "to_seconds") -> int:
+def convert_time_delta_str(
+    holding_period: str, conversion_type: str = "to_seconds"
+) -> int:
     """
     Converts holding period to number of days.
 
@@ -108,24 +118,38 @@ def convert_time_delta_str(holding_period: str, conversion_type: str = "to_secon
         int: Number of days.
     """
     if not isinstance(holding_period, str) or not holding_period:
-        raise ValueError("Invalid holding period format: " + str(holding_period))
+        raise ValueError(
+            "Invalid holding period format: " + str(holding_period)
+        )
 
     if "_days" in holding_period:
         try:
             if conversion_type == "to_seconds":
-                return int(holding_period.replace("_days", "")) * SECONDS_IN_DAY
+                return (
+                    int(holding_period.replace("_days", "")) * SECONDS_IN_DAY
+                )
             elif conversion_type == "to_days":
                 return int(holding_period.replace("_days", ""))
         except ValueError:
-            raise ValueError("Invalid holding period format: " + holding_period)
+            raise ValueError(
+                "Invalid holding period format: " + holding_period
+            )
     elif "_minutes" in holding_period:
         try:
             if conversion_type == "to_seconds":
-                return int(holding_period.replace("_minutes", "")) * SECONDS_IN_MINUTE
+                return (
+                    int(holding_period.replace("_minutes", ""))
+                    * SECONDS_IN_MINUTE
+                )
             elif conversion_type == "to_days":
-                return int(holding_period.replace("_minutes", "")) // SECONDS_IN_MINUTE
+                return (
+                    int(holding_period.replace("_minutes", ""))
+                    // SECONDS_IN_MINUTE
+                )
         except ValueError:
-            raise ValueError("Invalid holding period format: " + holding_period)
+            raise ValueError(
+                "Invalid holding period format: " + holding_period
+            )
     raise ValueError("Invalid holding period: " + holding_period)
 
 

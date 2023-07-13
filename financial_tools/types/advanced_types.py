@@ -18,7 +18,9 @@ from .enums import (
 from .symbol import Symbol
 
 Config = Dict[str, Union[str, int, float, None, "Config"]]
-Data = Dict[AssetClass, Dict[DataType, Dict[Symbol, Dict[str, Union[str, int, float]]]]]
+Data = Dict[
+    AssetClass, Dict[DataType, Dict[Symbol, Dict[str, Union[str, int, float]]]]
+]
 DataDict = Dict[Timestamp, Data]
 ObservedData = Dict[AssetClass, Dict[DataType, Dict[Symbol, pd.DataFrame]]]
 FutureData = ObservedData

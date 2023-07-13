@@ -27,7 +27,9 @@ class PolygonDataScraper(DataScraper):
         super().__init__(data_handler)
         self.api_key = api_key
         self.scale_to_ts_in_seconds = (
-            True if data_handler.other_settings["scale_to_ts_in_seconds"] else False
+            True
+            if data_handler.other_settings["scale_to_ts_in_seconds"]
+            else False
         )
         self.is_test_mode = is_test_mode
         self.test_tickers = data_handler.other_settings["test_tickers"]
@@ -40,7 +42,9 @@ class PolygonDataScraper(DataScraper):
 
     def _handle_request_error(self, response: requests.Response) -> None:
         if response.status_code != 200:
-            raise Exception(f"API request failed with status code {response.status_code}")
+            raise Exception(
+                f"API request failed with status code {response.status_code}"
+            )
 
     def get_tickers(self, limit: int = 1000) -> List[Dict]:
         if self.is_test_mode:
@@ -81,7 +85,11 @@ class PolygonDataScraper(DataScraper):
         if self.regenerate_tickers:
             tickers = self.get_tickers()
             self.data_handler.save_data(
-                "all", tickers, ft.DataType.SYMBOLS, self.is_test_mode, column_map=self.tickers_map
+                "all",
+                tickers,
+                ft.DataType.SYMBOLS,
+                self.is_test_mode,
+                column_map=self.tickers_map,
             )
 
         else:
@@ -104,7 +112,11 @@ class PolygonDataScraper(DataScraper):
 
         def filter_tickers(tickers, existing_data):
             if self.exclude_existing and not self.is_test_mode:
-                return [ticker for ticker in tickers if ticker["ticker"] not in existing_data]
+                return [
+                    ticker
+                    for ticker in tickers
+                    if ticker["ticker"] not in existing_data
+                ]
             return tickers
 
         filtered_tickers = filter_tickers(tickers, existing_data)
@@ -131,10 +143,14 @@ class PolygonDataScraper(DataScraper):
             # Fetch the daily OHLC
             try:
                 if remove_today:
-                    end_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+                    end_date = (datetime.now() - timedelta(days=1)).strftime(
+                        "%Y-%m-%d"
+                    )
                 else:
                     end_date = datetime.now().strftime("%Y-%m-%d")
-                start_date = (datetime.now() - timedelta(days=window_in_days)).strftime("%Y-%m-%d")
+                start_date = (
+                    datetime.now() - timedelta(days=window_in_days)
+                ).strftime("%Y-%m-%d")
                 ohlc = self.get_daily_ohlc(symbol, start_date, end_date)
                 if self.scale_to_ts_in_seconds:
                     self.scale_ohlc(ohlc)

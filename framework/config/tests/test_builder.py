@@ -20,7 +20,9 @@ def args():
     args.mode = ft.TradingMode.BACKTEST
     args.start = "2022-01-01"
     args.end = "2022-02-05"
-    args.global_config_path_str = "framework_config_global_test_test_simple_biotech_news_v0p0"
+    args.global_config_path_str = (
+        "framework_config_global_test_test_simple_biotech_news_v0p0"
+    )
     args.data_lookahead_days = "5_days"
     args.future_data_lookahead = "1_days"
     return args
@@ -32,7 +34,9 @@ def args_generate():
     args.mode = ft.TradingMode.BACKTEST
     args.start = "2022-01-01"
     args.end = "2022-02-05"
-    args.global_config_path_str = "framework_config_global_test_test_crossover_v0p0"
+    args.global_config_path_str = (
+        "framework_config_global_test_test_crossover_v0p0"
+    )
     args.data_lookahead_days = "5_days"
     args.future_data_lookahead = "1_days"
     return args
@@ -61,7 +65,11 @@ def test_build_global_config(args, logger):
 def test_load_configurations(args, logger):
     config_builder = ConfigBuilder(args, logger)
     config_builder.build_global_config()
-    strategy_configs, symbols_dict, providers_dict = config_builder.load_configurations()
+    (
+        strategy_configs,
+        symbols_dict,
+        providers_dict,
+    ) = config_builder.load_configurations()
 
     # Add assertions to check if the loaded configurations are as expected
     # This will depend on your specific test configuration files
@@ -72,7 +80,9 @@ def test_load_configurations(args, logger):
     # Example: check if the correct symbols are loaded for each asset class
     assert ft.AssetClass.US_EQUITY in symbols_dict
     # TODO - Why do we need to cast .value for this to work???
-    assert ft.Symbol("ACRX").value in [ele.value for ele in symbols_dict[ft.AssetClass.US_EQUITY]]
+    assert ft.Symbol("ACRX").value in [
+        ele.value for ele in symbols_dict[ft.AssetClass.US_EQUITY]
+    ]
     # Example: check if the correct data providers are loaded for each asset class and data type
     assert ft.AssetClass.US_EQUITY in providers_dict
     assert ft.DataType.DAILY_OHLC in providers_dict[ft.AssetClass.US_EQUITY]
@@ -90,15 +100,25 @@ def test_build_allocation_table(args, logger):
     # Add assertions to check if the built allocation table is as expected
     # This will depend on your specific test allocation config
     first_key = list(config_builder.allocation_table.keys())[0]
-    assert "test_simple_biotech_news_v0p0" in config_builder.allocation_table[first_key]
-    assert "test_simple_biotech_news_v0p1" in config_builder.allocation_table[first_key]
+    assert (
+        "test_simple_biotech_news_v0p0"
+        in config_builder.allocation_table[first_key]
+    )
+    assert (
+        "test_simple_biotech_news_v0p1"
+        in config_builder.allocation_table[first_key]
+    )
     assert len(config_builder.allocation_table) > 0
     assert (
-        config_builder.allocation_table[first_key]["test_simple_biotech_news_v0p0"]["weight"]
+        config_builder.allocation_table[first_key][
+            "test_simple_biotech_news_v0p0"
+        ]["weight"]
         == 1.0
     )
     assert (
-        config_builder.allocation_table[first_key]["test_simple_biotech_news_v0p1"]["weight"]
+        config_builder.allocation_table[first_key][
+            "test_simple_biotech_news_v0p1"
+        ]["weight"]
         == 2.0
     )
 
@@ -111,8 +131,15 @@ def test_generate_allocation_table(args_generate, logger):
     # This will depend
     # Check if the generated allocation table has the correct weights
     first_key = list(config_builder.allocation_table.keys())[0]
-    assert config_builder.allocation_table[first_key]["test_crossover_v0p0"]["weight"] == 1
     assert (
-        config_builder.allocation_table[first_key]["test_crossover_v0p0"]["path"].get_name()
+        config_builder.allocation_table[first_key]["test_crossover_v0p0"][
+            "weight"
+        ]
+        == 1
+    )
+    assert (
+        config_builder.allocation_table[first_key]["test_crossover_v0p0"][
+            "path"
+        ].get_name()
         == "test_crossover_v0p0"
     )

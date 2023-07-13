@@ -51,7 +51,11 @@ def test_get_trade_size(portfolio):
     weight = 1
     live_data = ft.LiveData(
         ft.TradingTimes.NYC_DAILY_OPEN,
-        {aapl_symbol.asset_class: {ft.DataType.DAILY_OHLC: {aapl_symbol: {"Open": 120}}}},
+        {
+            aapl_symbol.asset_class: {
+                ft.DataType.DAILY_OHLC: {aapl_symbol: {"Open": 120}}
+            }
+        },
     )
 
     trade_size = portfolio._get_trade_size(live_data, aapl_symbol, weight)
@@ -64,10 +68,16 @@ def test_execute_signals(portfolio):
     aapl_symbol = ft.Symbol("AAPL")
     live_data = ft.LiveData(
         ft.TradingTimes.NYC_DAILY_OPEN,
-        {aapl_symbol.asset_class: {ft.DataType.DAILY_OHLC: {aapl_symbol: {"Open": 120}}}},
+        {
+            aapl_symbol.asset_class: {
+                ft.DataType.DAILY_OHLC: {aapl_symbol: {"Open": 120}}
+            }
+        },
     )
 
-    signals = [ft.Signal(0, aapl_symbol, ft.SignalType("z_score_long"), 1, "test1")]
+    signals = [
+        ft.Signal(0, aapl_symbol, ft.SignalType("z_score_long"), 1, "test1")
+    ]
     weight = 1
     trades = portfolio.execute_trades(0, live_data, signals, weight)
     positions = portfolio.open_positions_by_symbol

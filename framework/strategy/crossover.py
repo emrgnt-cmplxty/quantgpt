@@ -33,7 +33,9 @@ class StrategyCrossover(StrategyBase):
     ) -> List[ft.Signal]:
         signals = []
 
-        assert ft.AssetClass.US_EQUITY in observed_data, "No US equities data found."
+        assert (
+            ft.AssetClass.US_EQUITY in observed_data
+        ), "No US equities data found."
         for symbol, ohlc_data in observed_data[ft.AssetClass.US_EQUITY][
             ft.DataType.DAILY_OHLC
         ].items():

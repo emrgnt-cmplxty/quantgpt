@@ -7,7 +7,11 @@ from typing import Any, Dict, List, Tuple
 import pandas as pd
 
 from financial_tools import types as ft
-from financial_tools.utils import nested_dict, read_data_file, run_multi_processed_code
+from financial_tools.utils import (
+    nested_dict,
+    read_data_file,
+    run_multi_processed_code,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +41,9 @@ class DataWranger:
 
 
 class DataManager:
-    def __init__(self, global_config: ft.GlobalConfig, logging_config: Dict[str, Any]):
+    def __init__(
+        self, global_config: ft.GlobalConfig, logging_config: Dict[str, Any]
+    ):
         """
         Initializes the DataManager object.
 
@@ -96,7 +102,9 @@ class DataManager:
             elif db_connection == ft.DBConnections.SQLITE:
                 raise NotImplementedError("SQLite not yet implemented")
             else:
-                raise NotImplementedError(f"db_connection={db_connection} not implemented")
+                raise NotImplementedError(
+                    f"db_connection={db_connection} not implemented"
+                )
             if df.empty:
                 logger.warning(
                     f"No ft.Data Found for connection={db_connection}, data_type={data_type}, provider_name={provider_name}, symbol={symbol}"
@@ -179,7 +187,9 @@ class DataManager:
         data: ft.DataDict = defaultdict(nested_dict)
         times: Dict[str, float] = defaultdict(float)
         for data_type in global_config["data_providers"][symbol.asset_class]:
-            for provider_name in global_config["data_providers"][symbol.asset_class][data_type]:
+            for provider_name in global_config["data_providers"][
+                symbol.asset_class
+            ][data_type]:
                 start = time.time()
                 df = self._fetch_data(
                     data_type,
@@ -189,7 +199,9 @@ class DataManager:
                 )
                 times["fetch_data"] += time.time() - start
 
-                df = self.wrangler.wrangle_loaded_data(df, data_type, provider_name)
+                df = self.wrangler.wrangle_loaded_data(
+                    df, data_type, provider_name
+                )
                 start = time.time()
                 filtered_df = self._filter_df(data_type, market_timestamps, df)
                 times["filter_data"] += time.time() - start
@@ -214,7 +226,11 @@ class DataManager:
         self,
     ) -> Dict[ft.Timestamp, Any]:
         all_args: List[Tuple] = [
-            (symbol, self.global_config["calendar"].timestamps, self.global_config)
+            (
+                symbol,
+                self.global_config["calendar"].timestamps,
+                self.global_config,
+            )
             for _, symbols in self.global_config["symbols"].items()
             for symbol in symbols
         ]
@@ -253,7 +269,9 @@ class DataManager:
                             data[timestamp][asset_class][data_type] = {}
 
                         for symbol, symbol_data in symbols.items():
-                            data[timestamp][asset_class][data_type][symbol] = symbol_data
+                            data[timestamp][asset_class][data_type][
+                                symbol
+                            ] = symbol_data
 
         self.timers["process_results"] = time.time() - start
         return data

@@ -54,9 +54,13 @@ class PerformanceManager:
         - portfolio_manager: Instance of PortfolioManager class.
         """
         aggregated_positions = portfolio_manager.aggregated_positions
-        aggregated_positions_by_strategy = portfolio_manager.aggregated_positions_by_strategy
+        aggregated_positions_by_strategy = (
+            portfolio_manager.aggregated_positions_by_strategy
+        )
         aggregated_trades = portfolio_manager.aggregated_trades
-        aggregated_trades_by_strategy = portfolio_manager.aggregated_trades_by_strategy
+        aggregated_trades_by_strategy = (
+            portfolio_manager.aggregated_trades_by_strategy
+        )
 
         self._update_total_pnl(
             timestamp,
@@ -88,18 +92,28 @@ class PerformanceManager:
             new_trade_sum = pnl_df["NewTrade"].fillna(0).sum()
             annualized_avg_return = np.mean(PnL) * ANNUALIZATION_FACTOR
             annualized_std_dev = np.std(PnL) * np.sqrt(ANNUALIZATION_FACTOR)
-            sharpe_ratio = (annualized_avg_return - RISK_FREE_RATE) / annualized_std_dev
+            sharpe_ratio = (
+                annualized_avg_return - RISK_FREE_RATE
+            ) / annualized_std_dev
             cumulative_returns = np.cumsum(PnL)
-            max_drawdown = np.max(np.maximum.accumulate(cumulative_returns) - cumulative_returns)
+            max_drawdown = np.max(
+                np.maximum.accumulate(cumulative_returns) - cumulative_returns
+            )
             symbol_str = f"for {symbol}" if symbol else ""
 
             if strategy_name:
-                logger.warning(f"--> Strategy {strategy_name} Results {symbol_str} <--")
+                logger.warning(
+                    f"--> Strategy {strategy_name} Results {symbol_str} <--"
+                )
             else:
                 logger.warning("--> Portfolio Results {symbol_str} <--")
 
-            logger.warning(f"Annualized Average Return -> {annualized_avg_return}")
-            logger.warning(f"Annualized Standard Deviation -> {annualized_std_dev}")
+            logger.warning(
+                f"Annualized Average Return -> {annualized_avg_return}"
+            )
+            logger.warning(
+                f"Annualized Standard Deviation -> {annualized_std_dev}"
+            )
             logger.warning(f"Sharpe Ratio -> {sharpe_ratio}")
             logger.warning(f"Max Drawdown -> {max_drawdown}")
             logger.warning("-- PnL --")
@@ -140,8 +154,12 @@ class PerformanceManager:
                     for ele in self.pnl_by_symbol[symbol]["Timestamp"]
                 ]
                 save_pnl_data(self.pnl_by_symbol[symbol], out_location)
-                self.pnl_by_symbol[symbol].drop(["ESTDateStr"], axis=1, inplace=True)
-                calculate_performance_metrics(self.pnl_by_symbol[symbol], symbol=symbol.value)
+                self.pnl_by_symbol[symbol].drop(
+                    ["ESTDateStr"], axis=1, inplace=True
+                )
+                calculate_performance_metrics(
+                    self.pnl_by_symbol[symbol], symbol=symbol.value
+                )
 
         def process_strategy_performance() -> None:
             """
@@ -162,24 +180,33 @@ class PerformanceManager:
                     ] = self._aggregate_pnl_by_timestamp(
                         self.pnl_by_strategy_by_symbol[strategy][symbol]
                     )
-                    self.pnl_by_strategy_by_symbol[strategy][symbol]["ESTDateStr"] = [
+                    self.pnl_by_strategy_by_symbol[strategy][symbol][
+                        "ESTDateStr"
+                    ] = [
                         convert_timestamp_to_est_datetime(ele)
-                        for ele in self.pnl_by_strategy_by_symbol[strategy][symbol]["Timestamp"]
+                        for ele in self.pnl_by_strategy_by_symbol[strategy][
+                            symbol
+                        ]["Timestamp"]
                     ]
 
-                    save_pnl_data(self.pnl_by_strategy_by_symbol[strategy][symbol], out_location)
+                    save_pnl_data(
+                        self.pnl_by_strategy_by_symbol[strategy][symbol],
+                        out_location,
+                    )
 
                     calculate_performance_metrics(
-                        self.pnl_by_strategy_by_symbol[strategy][symbol], strategy, symbol.value
+                        self.pnl_by_strategy_by_symbol[strategy][symbol],
+                        strategy,
+                        symbol.value,
                     )
                     self.pnl_by_strategy_by_symbol[strategy][symbol].drop(
                         ["ESTDateStr"], axis=1, inplace=True
                     )
 
         def process_aggregate_strategy_performance() -> None:
-            aggregated_strategy_pnl: Dict[ft.StrategyName, pd.DataFrame] = defaultdict(
-                pd.DataFrame
-            )
+            aggregated_strategy_pnl: Dict[
+                ft.StrategyName, pd.DataFrame
+            ] = defaultdict(pd.DataFrame)
             aggregate_pnl = 0
             for strategy in self.pnl_by_strategy_by_symbol:
                 for symbol in self.pnl_by_strategy_by_symbol[strategy]:
@@ -188,41 +215,59 @@ class PerformanceManager:
                         merged_df = pd.merge(
                             aggregated_strategy_pnl[strategy],
                             self._aggregate_pnl_by_timestamp(
-                                self.pnl_by_strategy_by_symbol[strategy][symbol]
+                                self.pnl_by_strategy_by_symbol[strategy][
+                                    symbol
+                                ]
                             )[["Timestamp", "NewTrade", "Positional"]],
                             on="Timestamp",
                             how="outer",
                         )
-                        aggregate_pnl += self.pnl_by_strategy_by_symbol[strategy][symbol][
-                            "NewTrade"
-                        ].sum()
-                        aggregate_pnl += self.pnl_by_strategy_by_symbol[strategy][symbol][
-                            "Positional"
-                        ].sum()
+                        aggregate_pnl += self.pnl_by_strategy_by_symbol[
+                            strategy
+                        ][symbol]["NewTrade"].sum()
+                        aggregate_pnl += self.pnl_by_strategy_by_symbol[
+                            strategy
+                        ][symbol]["Positional"].sum()
                         # Fill missing values with 0 and calculate the sums
                         merged_df["NewTrade_x"].fillna(0, inplace=True)
                         merged_df["NewTrade_y"].fillna(0, inplace=True)
                         merged_df["Positional_x"].fillna(0, inplace=True)
                         merged_df["Positional_y"].fillna(0, inplace=True)
-                        merged_df["NewTrade"] = merged_df["NewTrade_x"] + merged_df["NewTrade_y"]
+                        merged_df["NewTrade"] = (
+                            merged_df["NewTrade_x"] + merged_df["NewTrade_y"]
+                        )
                         merged_df["Positional"] = (
-                            merged_df["Positional_x"] + merged_df["Positional_y"]
+                            merged_df["Positional_x"]
+                            + merged_df["Positional_y"]
                         )
 
                         # Drop unnecessary columns and update the aggregated_strategy_pnl
                         merged_df.drop(
-                            columns=["NewTrade_x", "NewTrade_y", "Positional_x", "Positional_y"],
+                            columns=[
+                                "NewTrade_x",
+                                "NewTrade_y",
+                                "Positional_x",
+                                "Positional_y",
+                            ],
                             inplace=True,
                         )
                         aggregated_strategy_pnl[strategy] = merged_df.copy()
                     else:
-                        aggregated_strategy_pnl[strategy] = self.pnl_by_strategy_by_symbol[
+                        aggregated_strategy_pnl[
                             strategy
-                        ][symbol][["Timestamp", "NewTrade", "Positional"]].copy()
-                        aggregated_strategy_pnl[strategy]["NewTrade"].fillna(0, inplace=True)
-                        aggregated_strategy_pnl[strategy]["Positional"].fillna(0, inplace=True)
+                        ] = self.pnl_by_strategy_by_symbol[strategy][symbol][
+                            ["Timestamp", "NewTrade", "Positional"]
+                        ].copy()
+                        aggregated_strategy_pnl[strategy]["NewTrade"].fillna(
+                            0, inplace=True
+                        )
+                        aggregated_strategy_pnl[strategy]["Positional"].fillna(
+                            0, inplace=True
+                        )
 
-                    aggregated_strategy_pnl[strategy] = self._aggregate_pnl_by_timestamp(
+                    aggregated_strategy_pnl[
+                        strategy
+                    ] = self._aggregate_pnl_by_timestamp(
                         aggregated_strategy_pnl[strategy]
                     )
 
@@ -233,7 +278,9 @@ class PerformanceManager:
                     f'{strategy}_{self.global_config["name"]}_Aggregated_PnL.csv',
                 )
 
-                aggregated_strategy_pnl[strategy] = self._aggregate_pnl_by_timestamp(
+                aggregated_strategy_pnl[
+                    strategy
+                ] = self._aggregate_pnl_by_timestamp(
                     aggregated_strategy_pnl[strategy]
                 )
                 aggregated_strategy_pnl[strategy]["ESTDateStr"] = [
@@ -272,8 +319,14 @@ class PerformanceManager:
             trade = trades[symbol]
             # Calculate trade PnL
             returns_on_day = float(
-                future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][symbol]["Close"][0]
-            ) - float(future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][symbol]["Open"][0])
+                future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][
+                    symbol
+                ]["Close"][0]
+            ) - float(
+                future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][
+                    symbol
+                ]["Open"][0]
+            )
             pnl_by_symbol[symbol] = returns_on_day * float(trade.quantity)
 
         return pnl_by_symbol
@@ -328,8 +381,12 @@ class PerformanceManager:
 
             # Calculate position PnL
             close_diff = (
-                future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][symbol]["Close"][1]
-                - future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][symbol]["Close"][0]
+                future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][
+                    symbol
+                ]["Close"][1]
+                - future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][
+                    symbol
+                ]["Close"][0]
             )
             pnl_by_symbol[symbol] = close_diff * position.quantity
 
@@ -342,7 +399,10 @@ class PerformanceManager:
         future_data: ft.FutureData,
         positions: Dict[ft.Symbol, ft.Position],
         trades: Dict[ft.Symbol, ft.Trade],
-    ) -> Tuple[Dict[ft.Symbol, Dict[str, List[float]]], Dict[ft.Symbol, Dict[str, List[float]]],]:
+    ) -> Tuple[
+        Dict[ft.Symbol, Dict[str, List[float]]],
+        Dict[ft.Symbol, Dict[str, List[float]]],
+    ]:
         """
         Calculate local PnL for a given asset class.
 
@@ -358,7 +418,9 @@ class PerformanceManager:
         """
         new_trade_pnl_t = self._calculate_new_trade_pnl(trades, future_data)
 
-        positional_pnl_tp1 = self._calculate_positional_pnl(positions, future_data)
+        positional_pnl_tp1 = self._calculate_positional_pnl(
+            positions, future_data
+        )
 
         if len(trades) > 0:
             logger.info("Observed Trades = %s" % (trades))
@@ -381,7 +443,9 @@ class PerformanceManager:
 
         return calculated_pnl_t, calculated_pnl_tp1
 
-    def _aggregate_pnl_by_timestamp(self, pnl_df: pd.DataFrame) -> pd.DataFrame:
+    def _aggregate_pnl_by_timestamp(
+        self, pnl_df: pd.DataFrame
+    ) -> pd.DataFrame:
         timestamp_dict = {}
         columns = [col for col in pnl_df.columns if col != "Timestamp"]
 
@@ -410,9 +474,13 @@ class PerformanceManager:
         next_timestamp: ft.Timestamp,
         future_data: ft.FutureData,
         positions: Dict[ft.Symbol, ft.Position],
-        aggregated_positions_by_strategy: Dict[ft.StrategyName, Dict[ft.Symbol, ft.Position]],
+        aggregated_positions_by_strategy: Dict[
+            ft.StrategyName, Dict[ft.Symbol, ft.Position]
+        ],
         trades: Dict[ft.Symbol, ft.Trade],
-        aggregated_trades_by_strategy: Dict[ft.StrategyName, Dict[ft.Symbol, ft.Trade]],
+        aggregated_trades_by_strategy: Dict[
+            ft.StrategyName, Dict[ft.Symbol, ft.Trade]
+        ],
     ) -> None:
         """
         Update performance evaluation data for total portfolio.
@@ -437,7 +505,9 @@ class PerformanceManager:
 
         for symbol in calculated_pnl_t:
             if symbol not in self.pnl_by_symbol:
-                self.pnl_by_symbol[symbol] = pd.DataFrame.from_dict(calculated_pnl_t[symbol])
+                self.pnl_by_symbol[symbol] = pd.DataFrame.from_dict(
+                    calculated_pnl_t[symbol]
+                )
             else:
                 self.pnl_by_symbol[symbol] = pd.concat(
                     [
@@ -453,7 +523,9 @@ class PerformanceManager:
         ):
             for symbol in calculated_pnl_tp1:
                 if symbol not in self.pnl_by_symbol:
-                    self.pnl_by_symbol[symbol] = pd.DataFrame.from_dict(calculated_pnl_tp1[symbol])
+                    self.pnl_by_symbol[symbol] = pd.DataFrame.from_dict(
+                        calculated_pnl_tp1[symbol]
+                    )
                 else:
                     self.pnl_by_symbol[symbol] = pd.concat(
                         [
@@ -479,11 +551,13 @@ class PerformanceManager:
 
             for symbol in calculated_pnl_t:
                 if symbol not in self.pnl_by_strategy_by_symbol[strategy]:
-                    self.pnl_by_strategy_by_symbol[strategy][symbol] = pd.DataFrame.from_dict(
-                        calculated_pnl_t[symbol]
-                    )
+                    self.pnl_by_strategy_by_symbol[strategy][
+                        symbol
+                    ] = pd.DataFrame.from_dict(calculated_pnl_t[symbol])
                 else:
-                    self.pnl_by_strategy_by_symbol[strategy][symbol] = pd.concat(
+                    self.pnl_by_strategy_by_symbol[strategy][
+                        symbol
+                    ] = pd.concat(
                         [
                             self.pnl_by_strategy_by_symbol[strategy][symbol],
                             pd.DataFrame.from_dict(calculated_pnl_t[symbol]),
@@ -497,14 +571,20 @@ class PerformanceManager:
             ):
                 for symbol in calculated_pnl_tp1:
                     if symbol not in self.pnl_by_strategy_by_symbol[strategy]:
-                        self.pnl_by_strategy_by_symbol[strategy][symbol] = pd.DataFrame.from_dict(
-                            calculated_pnl_tp1[symbol]
-                        )
+                        self.pnl_by_strategy_by_symbol[strategy][
+                            symbol
+                        ] = pd.DataFrame.from_dict(calculated_pnl_tp1[symbol])
                     else:
-                        self.pnl_by_strategy_by_symbol[strategy][symbol] = pd.concat(
+                        self.pnl_by_strategy_by_symbol[strategy][
+                            symbol
+                        ] = pd.concat(
                             [
-                                self.pnl_by_strategy_by_symbol[strategy][symbol],
-                                pd.DataFrame.from_dict(calculated_pnl_tp1[symbol]),
+                                self.pnl_by_strategy_by_symbol[strategy][
+                                    symbol
+                                ],
+                                pd.DataFrame.from_dict(
+                                    calculated_pnl_tp1[symbol]
+                                ),
                             ],
                             ignore_index=True,
                         )
@@ -512,8 +592,12 @@ class PerformanceManager:
     def _get_aggregated_pnl(self) -> pd.DataFrame:
         return self._calc_aggregated_pnl(self.pnl_by_symbol)
 
-    def _get_aggregated_pnl_by_strategy(self) -> Dict[ft.StrategyName, pd.DataFrame]:
+    def _get_aggregated_pnl_by_strategy(
+        self,
+    ) -> Dict[ft.StrategyName, pd.DataFrame]:
         return {
-            strategy: self._calc_aggregated_pnl(self.pnl_by_strategy_by_symbol[strategy])
+            strategy: self._calc_aggregated_pnl(
+                self.pnl_by_strategy_by_symbol[strategy]
+            )
             for strategy in self.pnl_by_strategy_by_symbol
         }

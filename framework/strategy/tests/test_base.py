@@ -47,9 +47,13 @@ class TestStrategyBase:
     @pytest.fixture
     def base_strategy(self, global_config, strategy_config) -> StrategyBase:
         data_processor_mock = MagicMock()
-        return StrategyBase(data_processor_mock, global_config, strategy_config)
+        return StrategyBase(
+            data_processor_mock, global_config, strategy_config
+        )
 
-    def test_generate_signals_raises_not_implemented_error(self, base_strategy):
+    def test_generate_signals_raises_not_implemented_error(
+        self, base_strategy
+    ):
         with pytest.raises(NotImplementedError):
             base_strategy.generate_signals(1234, {})
 

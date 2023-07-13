@@ -56,13 +56,20 @@ class DataProcessor:
             run_start_date,
             run_end_date,
         )
-        lookback = convert_time_delta_str(self.global_config["observed_data_lookback"], "to_days")
-        lookahead = convert_time_delta_str(self.global_config["future_data_lookahead"], "to_days")
+        lookback = convert_time_delta_str(
+            self.global_config["observed_data_lookback"], "to_days"
+        )
+        lookahead = convert_time_delta_str(
+            self.global_config["future_data_lookahead"], "to_days"
+        )
 
         logger.info("Pre-computing future observable data")
         precomputed_future_data = self._precompute_future_data(keys, lookahead)
 
-        logger.info("Took %s seconds to pre-compute future observable data.", time.time() - now)
+        logger.info(
+            "Took %s seconds to pre-compute future observable data.",
+            time.time() - now,
+        )
         total_yield_time = 0.0
         for i in range(1, len(self.data_manager.data_dict) - 1):
             now = time.time()
@@ -73,7 +80,9 @@ class DataProcessor:
 
             self._update_observed_data(timestamp_tm1, lookback)
 
-            mock_live_data = self._get_clean_live_data(self.data_manager.data_dict[timestamp])
+            mock_live_data = self._get_clean_live_data(
+                self.data_manager.data_dict[timestamp]
+            )
 
             future_data = precomputed_future_data[timestamp]
 
@@ -91,12 +100,15 @@ class DataProcessor:
     def _get_clean_live_data(self, data: ft.Data) -> ft.LiveData:
         if (
             self.global_config["mode"] == ft.TradingMode.BACKTEST
-            and self.global_config["trading_times"] == ft.TradingTimes.NYC_DAILY_OPEN
+            and self.global_config["trading_times"]
+            == ft.TradingTimes.NYC_DAILY_OPEN
         ):
             mock_live_data = self._build_mock_live_data(data)
             return ft.LiveData(ft.TradingTimes.NYC_DAILY_OPEN, mock_live_data)
 
-        raise ValueError("Only backtest with NYC open trading times is supported at this time.")
+        raise ValueError(
+            "Only backtest with NYC open trading times is supported at this time."
+        )
 
     def _build_mock_live_data(self, data: ft.Data) -> ft.Data:
         mock_live_data: ft.Data = nested_dict()
@@ -112,10 +124,14 @@ class DataProcessor:
         return mock_live_data
 
     def _update_observed_data(self, timestamp: ft.Timestamp, lookback: int):
-        for asset_class, data_type_dict in self.data_manager.data_dict[timestamp].items():
+        for asset_class, data_type_dict in self.data_manager.data_dict[
+            timestamp
+        ].items():
             for data_type, symbol_dict in data_type_dict.items():
                 for symbol, data in symbol_dict.items():
-                    observed_data_df = self.observed_data[asset_class][data_type][symbol]
+                    observed_data_df = self.observed_data[asset_class][
+                        data_type
+                    ][symbol]
                     if not isinstance(observed_data_df, pd.DataFrame):
                         observed_data_df = pd.DataFrame(columns=data.keys())
                     new_data_df = pd.DataFrame(data, index=[0])
@@ -129,7 +145,9 @@ class DataProcessor:
                         ).tail(lookback)
                     elif not new_data_df.empty:
                         observed_data_df = new_data_df
-                    self.observed_data[asset_class][data_type][symbol] = observed_data_df
+                    self.observed_data[asset_class][data_type][
+                        symbol
+                    ] = observed_data_df
 
     def _precompute_future_data_worker(
         self, args: Tuple["DataProcessor", int, int, List[ft.Timestamp], int]
@@ -150,46 +168,68 @@ class DataProcessor:
         preload_data: ft.ObservedData = nested_dict()
         for i in range(end_idx + 1, min(end_idx + lookahead, len(keys))):
             timestamp = int(keys[i])
-            for asset_class, data_type_dict in data_processor.data_manager.data_dict[
-                timestamp
-            ].items():
+            for (
+                asset_class,
+                data_type_dict,
+            ) in data_processor.data_manager.data_dict[timestamp].items():
                 for data_type, symbol_dict in data_type_dict.items():
                     for symbol, data in symbol_dict.items():
                         if not isinstance(
-                            preload_data[asset_class][data_type][symbol], pd.DataFrame
+                            preload_data[asset_class][data_type][symbol],
+                            pd.DataFrame,
                         ):
-                            preload_data[asset_class][data_type][symbol] = pd.DataFrame()
+                            preload_data[asset_class][data_type][
+                                symbol
+                            ] = pd.DataFrame()
 
-                        data_df = pd.DataFrame.from_dict({key: [val] for key, val in data.items()})
-                        preload_data_df = preload_data[asset_class][data_type][symbol]
+                        data_df = pd.DataFrame.from_dict(
+                            {key: [val] for key, val in data.items()}
+                        )
+                        preload_data_df = preload_data[asset_class][data_type][
+                            symbol
+                        ]
                         # Cast df boolean columns
                         self._cast_to_booleans(data_df)
                         self._cast_to_booleans(preload_data_df)
                         if not data_df.empty and not preload_data_df.empty:
-                            preload_data[asset_class][data_type][symbol] = pd.concat(
+                            preload_data[asset_class][data_type][
+                                symbol
+                            ] = pd.concat(
                                 [data_df, preload_data_df],
                                 ignore_index=True,
-                            ).head(lookahead)
+                            ).head(
+                                lookahead
+                            )
                         elif not data_df.empty:
-                            preload_data[asset_class][data_type][symbol] = data_df
+                            preload_data[asset_class][data_type][
+                                symbol
+                            ] = data_df
 
         # Process the chunk
         # TODO - modify this to stop maintaining the preload data after
         # we are past the buffer point (e.g. when we are at end_indx - lookahead)
         for i in range(end_idx, start_idx - 1, -1):
             timestamp = int(keys[i])
-            for asset_class, data_type_dict in data_processor.data_manager.data_dict[
-                timestamp
-            ].items():
+            for (
+                asset_class,
+                data_type_dict,
+            ) in data_processor.data_manager.data_dict[timestamp].items():
                 for data_type, symbol_dict in data_type_dict.items():
                     for symbol, data in symbol_dict.items():
-                        data_df = pd.DataFrame.from_dict({key: [val] for key, val in data.items()})
+                        data_df = pd.DataFrame.from_dict(
+                            {key: [val] for key, val in data.items()}
+                        )
                         if not isinstance(
-                            preload_data[asset_class][data_type][symbol], pd.DataFrame
+                            preload_data[asset_class][data_type][symbol],
+                            pd.DataFrame,
                         ):
-                            preload_data[asset_class][data_type][symbol] = pd.DataFrame()
+                            preload_data[asset_class][data_type][
+                                symbol
+                            ] = pd.DataFrame()
 
-                        preload_df = preload_data[asset_class][data_type][symbol]
+                        preload_df = preload_data[asset_class][data_type][
+                            symbol
+                        ]
                         future_data[asset_class][data_type][symbol] = data_df
 
                         if not data_df.empty and not preload_df.empty:
@@ -200,16 +240,24 @@ class DataProcessor:
                                 [data_df, preload_df],
                                 ignore_index=True,
                             ).head(lookahead)
-                            future_data[asset_class][data_type][symbol] = concat_df
+                            future_data[asset_class][data_type][
+                                symbol
+                            ] = concat_df
 
                             # Update the preload_data
-                            preload_data[asset_class][data_type][symbol] = concat_df
+                            preload_data[asset_class][data_type][
+                                symbol
+                            ] = concat_df
 
                         elif not data_df.empty:
-                            future_data[asset_class][data_type][symbol] = data_df
+                            future_data[asset_class][data_type][
+                                symbol
+                            ] = data_df
 
                             # Update the preload_data
-                            preload_data[asset_class][data_type][symbol] = data_df
+                            preload_data[asset_class][data_type][
+                                symbol
+                            ] = data_df
 
             chunk_future_data[timestamp] = copy.deepcopy(future_data)
 
@@ -254,16 +302,27 @@ class DataProcessor:
 
         # Prepare the arguments for multiprocessing
         precompute_future_data_args = [
-            (self, i * chunk_size, min((i + 1) * chunk_size, len(keys)) - 1, keys, lookahead)
+            (
+                self,
+                i * chunk_size,
+                min((i + 1) * chunk_size, len(keys)) - 1,
+                keys,
+                lookahead,
+            )
             for i in range(num_chunks)
         ]
 
         # Use a process pool to parallelize the computation
         with Pool(processes=num_chunks) as pool:
-            results = pool.map(self._precompute_future_data_worker, precompute_future_data_args)
+            results = pool.map(
+                self._precompute_future_data_worker,
+                precompute_future_data_args,
+            )
         # Combine the results from different processes
         for chunk_future_data in results:
             for timestamp in chunk_future_data:
                 if timestamp not in precomputed_future_data:
-                    precomputed_future_data[timestamp] = chunk_future_data[timestamp]
+                    precomputed_future_data[timestamp] = chunk_future_data[
+                        timestamp
+                    ]
         return precomputed_future_data

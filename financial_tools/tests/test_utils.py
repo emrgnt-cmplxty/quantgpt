@@ -113,7 +113,9 @@ class TestUtils(unittest.TestCase):
         symbol = Symbol("ACRX", AssetClass.US_EQUITY, None)
         db_connection = DBConnections.CSV
         # Assume the ACRX.csv file exists in the data/equity/daily_ohlc/test directory
-        result = read_data_file(data_type, provider_name, symbol, db_connection)
+        result = read_data_file(
+            data_type, provider_name, symbol, db_connection
+        )
         self.assertIsInstance(result, pd.DataFrame)
         self.assertFalse(result.empty)
 

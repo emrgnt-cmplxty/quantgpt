@@ -5,7 +5,11 @@ import time
 from typing import List
 from unittest.mock import MagicMock
 
-from financial_tools.types import EnumEncoder, TradingMode, prepare_json_for_dump
+from financial_tools.types import (
+    EnumEncoder,
+    TradingMode,
+    prepare_json_for_dump,
+)
 from financial_tools.utils import get_logging_config
 from framework.config.builder import ConfigBuilder
 from framework.data.manager import DataManager
@@ -89,7 +93,9 @@ def main(args: argparse.Namespace) -> None:
 
     framework_mode.run()
     framework_mode.save()
-    if isinstance(config_builder, MagicMock) or isinstance(framework_mode, BacktestMode):
+    if isinstance(config_builder, MagicMock) or isinstance(
+        framework_mode, BacktestMode
+    ):
         performance_manager.generate_report()
         performance_plotter.plot()
 

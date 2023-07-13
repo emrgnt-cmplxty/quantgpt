@@ -43,7 +43,9 @@ def test_backtest_mode_run(global_config, allocation_table) -> None:
     """Test the run method of BacktestMode."""
     # Set up mocks
     data_processor = MagicMock()
-    data_processor.iter_data.return_value = [(1, 2, observed_data, {}, future_data)]
+    data_processor.iter_data.return_value = [
+        (1, 2, observed_data, {}, future_data)
+    ]
 
     strategies = [create_mock_strategy()]
     strategies[0].strategy_config = {"config_name": "A", "table_name": "A"}  # type: ignore
@@ -126,7 +128,9 @@ def test_backtest_mode_run_empty_allocation_table(global_config) -> None:
     performance_manager = MagicMock()
     performance_plotter = MagicMock()
 
-    allocation_table_empty: Dict[ft.Timestamp, Dict[str, ft.AllocationEntry]] = {}
+    allocation_table_empty: Dict[
+        ft.Timestamp, Dict[str, ft.AllocationEntry]
+    ] = {}
 
     # Run the test
     backtest_mode = BacktestMode(
@@ -140,6 +144,7 @@ def test_backtest_mode_run_empty_allocation_table(global_config) -> None:
     )
 
     with pytest.raises(
-        ValueError, match="The allocation_table must contain an entry for every day."
+        ValueError,
+        match="The allocation_table must contain an entry for every day.",
     ):
         backtest_mode.run()

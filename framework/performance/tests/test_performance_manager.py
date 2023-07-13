@@ -20,8 +20,16 @@ def test_data():
     return {
         ft.AssetClass.US_EQUITY: {
             ft.DataType.DAILY_OHLC: {
-                ft.Symbol("AAPL"): {"Open": [110], "Close": [120, 130], "Timestamp": [1, 2]},
-                ft.Symbol("GOOGL"): {"Open": [90], "Close": [130, 140], "Timestamp": [1, 2]},
+                ft.Symbol("AAPL"): {
+                    "Open": [110],
+                    "Close": [120, 130],
+                    "Timestamp": [1, 2],
+                },
+                ft.Symbol("GOOGL"): {
+                    "Open": [90],
+                    "Close": [130, 140],
+                    "Timestamp": [1, 2],
+                },
             }
         }
     }
@@ -72,12 +80,17 @@ def test_calculate_pnl(global_config, test_data, test_positions, test_trades):
     assert calculated_pnl_t[ft.Symbol("AAPL")]["Timestamp"][0] == timestamp
     assert calculated_pnl_t[ft.Symbol("AAPL")]["NewTrade"][0] == 10 * 100
     assert calculated_pnl_t[ft.Symbol("AAPL")]["Positional"][0] == 0
-    assert calculated_pnl_tp1[ft.Symbol("GOOGL")]["Timestamp"][0] == next_timestamp
+    assert (
+        calculated_pnl_tp1[ft.Symbol("GOOGL")]["Timestamp"][0]
+        == next_timestamp
+    )
     assert calculated_pnl_tp1[ft.Symbol("GOOGL")]["Positional"][0] == 10 * 110
     assert calculated_pnl_tp1[ft.Symbol("GOOGL")]["NewTrade"][0] == 0
 
 
-def test_update_total_pnl(global_config, test_data, test_positions, test_trades):
+def test_update_total_pnl(
+    global_config, test_data, test_positions, test_trades
+):
     pm = PerformanceManager(global_config)
     timestamp = 1
     next_timestamp = 2
@@ -85,8 +98,12 @@ def test_update_total_pnl(global_config, test_data, test_positions, test_trades)
     positions_by_asset_class = test_positions
     test_trades_by_asset_class = test_trades
 
-    aggregated_positions_by_strategy = {"test_strategy": positions_by_asset_class}
-    aggregated_trades_by_strategy = {"test_strategy": test_trades_by_asset_class}
+    aggregated_positions_by_strategy = {
+        "test_strategy": positions_by_asset_class
+    }
+    aggregated_trades_by_strategy = {
+        "test_strategy": test_trades_by_asset_class
+    }
 
     pm._update_total_pnl(
         timestamp,

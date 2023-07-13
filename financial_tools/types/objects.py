@@ -38,7 +38,9 @@ class Signal:
 
 
 class Position:
-    def __init__(self, symbol: Symbol, quantity: int, cost_basis: float) -> None:
+    def __init__(
+        self, symbol: Symbol, quantity: int, cost_basis: float
+    ) -> None:
         self.symbol = symbol
         self.quantity = quantity
         self.cost_basis = cost_basis
@@ -70,7 +72,13 @@ class Trade:
         return f"Trade(timestamp={self.timestamp}, symbol={self.symbol}, quantity={self.quantity}, limit_price={self.limit_price})"
 
     def copy(self) -> "Trade":
-        return Trade(self.timestamp, self.symbol, self.quantity, self.limit_price, self.trade_type)
+        return Trade(
+            self.timestamp,
+            self.symbol,
+            self.quantity,
+            self.limit_price,
+            self.trade_type,
+        )
 
 
 class AggregatedPositions:
@@ -108,11 +116,17 @@ class AggregatedPositions:
                     aggregated_positions_by_strategy[strategy].get(symbol),
                     position.copy(),
                 )
-                aggregated_positions_by_strategy[strategy][symbol] = updated_position_by_strategy
-        self.aggregated_positions_by_strategy = aggregated_positions_by_strategy
+                aggregated_positions_by_strategy[strategy][
+                    symbol
+                ] = updated_position_by_strategy
+        self.aggregated_positions_by_strategy = (
+            aggregated_positions_by_strategy
+        )
         self.aggregated_positions = aggregated_positions
 
-    def update_position(self, aggregate: Optional[Position], position: Position) -> Position:
+    def update_position(
+        self, aggregate: Optional[Position], position: Position
+    ) -> Position:
         """
         Update position in the given aggregate position.
 
@@ -123,7 +137,8 @@ class AggregatedPositions:
         if aggregate:
             total_quantity = aggregate.quantity + position.quantity
             new_avg_price = (
-                aggregate.cost_basis * aggregate.quantity + position.cost_basis * position.quantity
+                aggregate.cost_basis * aggregate.quantity
+                + position.cost_basis * position.quantity
             ) / total_quantity
             return Position(
                 position.symbol,
@@ -154,18 +169,24 @@ class AggregatedTrades:
         :return: Aggregated trades by asset class and symbol
         """
         aggregated_trades: Dict[Symbol, Trade] = {}
-        aggregated_trades_by_strategy: Dict[StrategyName, Dict[Symbol, Trade]] = nested_dict()
+        aggregated_trades_by_strategy: Dict[
+            StrategyName, Dict[Symbol, Trade]
+        ] = nested_dict()
         for strategy, trades in self.raw_trades:
             for trade in trades:
                 symbol = trade.symbol
 
-                updated_trade = self.update_trade(aggregated_trades.get(symbol), trade.copy())
+                updated_trade = self.update_trade(
+                    aggregated_trades.get(symbol), trade.copy()
+                )
                 aggregated_trades[symbol] = updated_trade
                 updated_trade_by_strategy = self.update_trade(
                     aggregated_trades_by_strategy[strategy].get(symbol),
                     trade.copy(),
                 )
-                aggregated_trades_by_strategy[strategy][symbol] = updated_trade_by_strategy
+                aggregated_trades_by_strategy[strategy][
+                    symbol
+                ] = updated_trade_by_strategy
         self.aggregated_trades = aggregated_trades
         self.aggregated_trades_by_strategy = aggregated_trades_by_strategy
 

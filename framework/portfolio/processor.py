@@ -24,7 +24,11 @@ class PortfolioProcessor:
         OPEN = 1
         CLOSE = 2
 
-    def __init__(self, global_config: ft.GlobalConfig, strategy_config: ft.StrategyConfig):
+    def __init__(
+        self,
+        global_config: ft.GlobalConfig,
+        strategy_config: ft.StrategyConfig,
+    ):
         self.global_config = global_config
         self.strategy_config = strategy_config
         self.trade_config = strategy_config["trade_config"]
@@ -49,16 +53,24 @@ class PortfolioProcessor:
             properties = self.trade_config["by_asset_class"][asset_class]
 
             if properties["type"] == ft.TradeType.SIMPLE_FIXED:
-                holding_period = convert_time_delta_str(cast(str, properties["holding_period"]))
+                holding_period = convert_time_delta_str(
+                    cast(str, properties["holding_period"])
+                )
 
-                is_buy_signal = signal.signal_type == ft.SignalType.Z_SCORE_LONG
-                is_sell_signal = signal.signal_type == ft.SignalType.Z_SCORE_SHORT
+                is_buy_signal = (
+                    signal.signal_type == ft.SignalType.Z_SCORE_LONG
+                )
+                is_sell_signal = (
+                    signal.signal_type == ft.SignalType.Z_SCORE_SHORT
+                )
 
                 if not (is_buy_signal or is_sell_signal):
                     continue
 
                 sign = 1 if is_buy_signal else -1
-                trade_size = self._get_trade_size(live_data, signal.symbol, weight)
+                trade_size = self._get_trade_size(
+                    live_data, signal.symbol, weight
+                )
                 if trade_size == 0:
                     continue
                 quantity = int(sign * trade_size * signal.signal_strength)
@@ -79,7 +91,9 @@ class PortfolioProcessor:
                 adj_open_trades.append(new_trade)
 
             else:
-                raise ValueError("Invalid trade type: %s" % (properties["type"]))
+                raise ValueError(
+                    "Invalid trade type: %s" % (properties["type"])
+                )
 
         # Close out expired positions
         for trade in self.open_trades:
@@ -87,15 +101,21 @@ class PortfolioProcessor:
             properties = self.trade_config["by_asset_class"][asset_class]
 
             if properties["type"] == ft.TradeType.SIMPLE_FIXED:
-                holding_period = convert_time_delta_str(cast(str, properties["holding_period"]))
+                holding_period = convert_time_delta_str(
+                    cast(str, properties["holding_period"])
+                )
 
                 if timestamp >= trade.timestamp + holding_period:
-                    closed_trade = self._process_position(self.Action.CLOSE, trade, live_data)
+                    closed_trade = self._process_position(
+                        self.Action.CLOSE, trade, live_data
+                    )
                     trades.append(closed_trade)
                 else:
                     adj_open_trades.append(trade)
             else:
-                raise ValueError("Invalid trade type: %s" % (properties["type"]))
+                raise ValueError(
+                    "Invalid trade type: %s" % (properties["type"])
+                )
 
         self.open_trades = adj_open_trades
         return trades
@@ -114,7 +134,8 @@ class PortfolioProcessor:
         if len(self.open_positions_by_symbol) > 0:
             logger.info(
                 "{} - Positions: {}".format(
-                    self.strategy_config["config_name"], self.open_positions_by_symbol
+                    self.strategy_config["config_name"],
+                    self.open_positions_by_symbol,
                 )
             )
 
@@ -135,7 +156,9 @@ class PortfolioProcessor:
 
         return self.open_trades
 
-    def get_open_positions_by_asset_class(self) -> Dict[ft.Symbol, ft.Position]:
+    def get_open_positions_by_asset_class(
+        self,
+    ) -> Dict[ft.Symbol, ft.Position]:
         """
         Retrieve the current positions in the portfolio.
         """
@@ -147,14 +170,17 @@ class PortfolioProcessor:
         """
         mode = self.global_config["mode"]
         config_name = self.strategy_config["config_name"]
-        out_location = f"{home_path()}/results/positions/{mode.value}/{config_name}.csv"
+        out_location = (
+            f"{home_path()}/results/positions/{mode.value}/{config_name}.csv"
+        )
         # make directories if they don't exist
         os.makedirs(os.path.dirname(out_location), exist_ok=True)
         logger.info(f"Saving Portfolio Positions to {out_location}")
         if len(self.positions_df) > 0:
             # Add the ESTDateStr column for readability
             self.positions_df["ESTDateStr"] = [
-                convert_timestamp_to_est_datetime(ele) for ele in self.positions_df["Timestamp"]
+                convert_timestamp_to_est_datetime(ele)
+                for ele in self.positions_df["Timestamp"]
             ]
         self.positions_df.to_csv(out_location, index=False)
 
@@ -195,7 +221,8 @@ class PortfolioProcessor:
             # Otherwise, update the position
             else:
                 updated_avg_price = (
-                    existing_avg_price * existing_quantity + trade_price * trade_quantity
+                    existing_avg_price * existing_quantity
+                    + trade_price * trade_quantity
                 ) / new_quantity
                 existing_position.quantity = new_quantity
                 existing_position.cost_basis = updated_avg_price
@@ -208,7 +235,9 @@ class PortfolioProcessor:
         # Update the cash
         self.cash -= trade_quantity * trade_price
 
-    def _get_trade_size(self, live_data: ft.LiveData, symbol: ft.Symbol, weight: float) -> int:
+    def _get_trade_size(
+        self, live_data: ft.LiveData, symbol: ft.Symbol, weight: float
+    ) -> int:
         """
         Calculate the trade size based on the given data and asset class.
 
@@ -219,13 +248,26 @@ class PortfolioProcessor:
         """
 
         trade_config = self.trade_config["by_asset_class"][symbol.asset_class]
-        trade_type, trade_size = trade_config["type"], float(trade_config["trade_size_in_dollars"])
-        live_symbol_data = live_data.data[symbol.asset_class][ft.DataType.DAILY_OHLC][symbol]
-        if "Open" not in live_data.data[symbol.asset_class][ft.DataType.DAILY_OHLC][symbol]:
-            logger.error("LiveData was missing Open for symbol: {}".format(symbol))
+        trade_type, trade_size = trade_config["type"], float(
+            trade_config["trade_size_in_dollars"]
+        )
+        live_symbol_data = live_data.data[symbol.asset_class][
+            ft.DataType.DAILY_OHLC
+        ][symbol]
+        if (
+            "Open"
+            not in live_data.data[symbol.asset_class][ft.DataType.DAILY_OHLC][
+                symbol
+            ]
+        ):
+            logger.error(
+                "LiveData was missing Open for symbol: {}".format(symbol)
+            )
             return 0
         if trade_type == ft.TradeType.SIMPLE_FIXED:
-            trade_size = int(weight * trade_size / float(live_symbol_data["Open"]))
+            trade_size = int(
+                weight * trade_size / float(live_symbol_data["Open"])
+            )
             return trade_size
         else:
             raise ValueError(f"Invalid trade type: {trade_type}")
@@ -244,13 +286,19 @@ class PortfolioProcessor:
         """
         Obtain trade details based on the given trade and input data.
         """
-        symbol, quantity, limit_price = trade.symbol, trade.quantity, trade.limit_price
+        symbol, quantity, limit_price = (
+            trade.symbol,
+            trade.quantity,
+            trade.limit_price,
+        )
         trading_times = self.global_config["trading_times"]
         trade_price = None
         if trading_times == ft.TradingTimes.NYC_DAILY_OPEN:
             # When trading at the open, the trade price is the open price
             trade_price = float(
-                live_data.data[symbol.asset_class][ft.DataType.DAILY_OHLC][symbol]["Open"]
+                live_data.data[symbol.asset_class][ft.DataType.DAILY_OHLC][
+                    symbol
+                ]["Open"]
             )
         else:
             raise ValueError(f"Invalid trading times: {trading_times}")
@@ -288,7 +336,11 @@ class PortfolioProcessor:
                 "Quantity": self.open_positions_by_symbol[symbol].quantity,
                 "AvgPrice": self.open_positions_by_symbol[symbol].cost_basis,
             }
-        positions_df = pd.DataFrame.from_dict(positions_to_print, orient="index")
+        positions_df = pd.DataFrame.from_dict(
+            positions_to_print, orient="index"
+        )
         positions_df.index.name = "asset"
         positions_df["Timestamp"] = timestamp
-        self.positions_df = pd.concat([self.positions_df, positions_df], sort=True)
+        self.positions_df = pd.concat(
+            [self.positions_df, positions_df], sort=True
+        )

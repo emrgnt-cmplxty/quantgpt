@@ -18,7 +18,9 @@ class PortfolioManager:
         self.aggregated_positions_by_strategy: Dict[
             ft.StrategyName, Dict[ft.Symbol, ft.Position]
         ] = {}
-        self.aggregated_trades_by_strategy: Dict[ft.StrategyName, Dict[ft.Symbol, ft.Trade]] = {}
+        self.aggregated_trades_by_strategy: Dict[
+            ft.StrategyName, Dict[ft.Symbol, ft.Trade]
+        ] = {}
 
     def update(
         self,
@@ -47,4 +49,6 @@ class PortfolioManager:
         )
         self.aggregated_trades = trade_aggregator.aggregated_trades
 
-        self.aggregated_trades_by_strategy = trade_aggregator.aggregated_trades_by_strategy
+        self.aggregated_trades_by_strategy = (
+            trade_aggregator.aggregated_trades_by_strategy
+        )

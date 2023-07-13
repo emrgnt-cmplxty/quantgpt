@@ -39,7 +39,9 @@ def setup_argparse() -> argparse.Namespace:
         type=str,
         default="2022-08-01",
     )
-    parser.add_argument("--end", help="End date of the run", type=str, default="2022-10-01")
+    parser.add_argument(
+        "--end", help="End date of the run", type=str, default="2022-10-01"
+    )
     parser.add_argument(
         "--log_level",
         help="Logging level",

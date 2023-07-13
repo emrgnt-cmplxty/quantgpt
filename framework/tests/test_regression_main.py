@@ -6,7 +6,10 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 import pytest
 
-from financial_tools.utils import convert_est_datestr_to_unix_timestamp, home_path
+from financial_tools.utils import (
+    convert_est_datestr_to_unix_timestamp,
+    home_path,
+)
 from framework.config.builder import ConfigBuilder
 from framework.main import main
 from framework.setup_argparse import setup_argparse
@@ -18,7 +21,9 @@ def check_target_files(global_config, file_type="pnl", max_date=""):
     """
     global_config_name = global_config["name"]
 
-    target_dir = os.path.join(home_path(), "data", "regressions", global_config_name, file_type)
+    target_dir = os.path.join(
+        home_path(), "data", "regressions", global_config_name, file_type
+    )
     if file_type == "positions":
         target_dir = os.path.join(target_dir, "backtest")
     regression_file_paths = glob(os.path.join(target_dir, "*.csv"))
@@ -49,20 +54,28 @@ def check_target_files(global_config, file_type="pnl", max_date=""):
                 print("new_file.sum()=", new_file.sum())
 
                 # Check if files are equal
-                assert regression_file.equals(new_file), "PnL files are not equal"
+                assert regression_file.equals(
+                    new_file
+                ), "PnL files are not equal"
                 checked_strategy = True
         # Check aggregate pnl
         if file_type == "pnl" and "Aggregated" in file_path:
             regression_file = pd.read_csv(file_path)
             file_name = os.path.split(file_path)[-1]
-            new_file = pd.read_csv(os.path.join(home_path(), "results", file_type, file_name))
+            new_file = pd.read_csv(
+                os.path.join(home_path(), "results", file_type, file_name)
+            )
 
             if max_date != "":
                 regression_file = regression_file[
-                    regression_file["Timestamp"] < convert_est_datestr_to_unix_timestamp(max_date)
+                    regression_file["Timestamp"]
+                    < convert_est_datestr_to_unix_timestamp(max_date)
                 ]
             print("file_path = ", file_path)
-            print("new_file_path = ", os.path.join(home_path(), "results", file_type, file_name))
+            print(
+                "new_file_path = ",
+                os.path.join(home_path(), "results", file_type, file_name),
+            )
             print("regression_file.sum()=", regression_file.sum())
             print("regression_file = ", regression_file)
             print("new_file.sum()=", new_file.sum())

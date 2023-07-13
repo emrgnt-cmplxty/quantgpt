@@ -23,10 +23,14 @@ def main(args: argparse.Namespace) -> None:
         home_path(),
         "pipeline",
         "config",
-        args.provider_config if args.provider_config != "" else (args.scraper + ".jsonc"),
+        args.provider_config
+        if args.provider_config != ""
+        else (args.scraper + ".jsonc"),
     )
     logger.info("Config Path %s ", config_path)
-    data_handler = DataHandler(jsonc_file=config_path)  # Use "db" for database mode
+    data_handler = DataHandler(
+        jsonc_file=config_path
+    )  # Use "db" for database mode
     if args.scraper == "polygon":
         PolygonDataScraper(
             data_handler,
@@ -37,7 +41,9 @@ def main(args: argparse.Namespace) -> None:
         ).backfill()
     elif args.scraper == "biopharmcatalyst":
         BiopharmCatalystDataScraper(
-            data_handler, args.chrome_driver_path, is_test_mode=args.is_test_run
+            data_handler,
+            args.chrome_driver_path,
+            is_test_mode=args.is_test_run,
         ).backfill()
 
 

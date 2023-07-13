@@ -24,7 +24,9 @@ def global_config():
     return {
         "some_global_config": "value",
         "trading_times": "NYC_DAILY_OPEN",
-        "calendar": ft.TradingCalendar("2000-01-1", "2023-03-01", "00:00:00", "NYSE"),
+        "calendar": ft.TradingCalendar(
+            "2000-01-1", "2023-03-01", "00:00:00", "NYSE"
+        ),
     }
 
 
@@ -70,7 +72,9 @@ def strategy_config():
 
 
 @pytest.fixture
-def simple_biotech_news_instance(data_processor, global_config, strategy_config):
+def simple_biotech_news_instance(
+    data_processor, global_config, strategy_config
+):
     return StrategyBiotechNews(data_processor, global_config, strategy_config)
 
 
@@ -108,8 +112,12 @@ def test_generate_signals(simple_biotech_news_instance):
     observed_data = {
         ft.AssetClass.US_EQUITY: {
             ft.DataType.DAILY_OHLC: {
-                ft.Symbol("MRNA"): pd.DataFrame.from_dict({"Volume": [50_000], "Close": [10]}),
-                ft.Symbol("IBB"): pd.DataFrame.from_dict({"Volume": [50_000], "Close": [10]}),
+                ft.Symbol("MRNA"): pd.DataFrame.from_dict(
+                    {"Volume": [50_000], "Close": [10]}
+                ),
+                ft.Symbol("IBB"): pd.DataFrame.from_dict(
+                    {"Volume": [50_000], "Close": [10]}
+                ),
             },
             ft.DataType.NEWS: {
                 # TODO - cleanup
@@ -123,15 +131,17 @@ def test_generate_signals(simple_biotech_news_instance):
         }
     }
 
-    observed_data[ft.AssetClass.US_EQUITY][ft.DataType.DAILY_OHLC][ft.Symbol("MRNA")][
-        "Timestamp"
-    ] = [timestamp]
-    observed_data[ft.AssetClass.US_EQUITY][ft.DataType.DAILY_OHLC][ft.Symbol("MRNA")].set_index(
-        "Timestamp", inplace=True
-    )
+    observed_data[ft.AssetClass.US_EQUITY][ft.DataType.DAILY_OHLC][
+        ft.Symbol("MRNA")
+    ]["Timestamp"] = [timestamp]
+    observed_data[ft.AssetClass.US_EQUITY][ft.DataType.DAILY_OHLC][
+        ft.Symbol("MRNA")
+    ].set_index("Timestamp", inplace=True)
 
     # Run the method
-    signals = simple_biotech_news_instance.generate_signals(timestamp, observed_data)
+    signals = simple_biotech_news_instance.generate_signals(
+        timestamp, observed_data
+    )
 
     # Assert the results
     assert len(signals) == 1

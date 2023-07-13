@@ -33,7 +33,9 @@ def load_config(config_path: ConfigPath) -> Config:
     return config
 
 
-def build_symbols(asset_class: AssetClass, sub_class: Optional[str]) -> List[Symbol]:
+def build_symbols(
+    asset_class: AssetClass, sub_class: Optional[str]
+) -> List[Symbol]:
     """
     Builds symbols from a given asset_class and subclass.
 
@@ -53,7 +55,9 @@ def build_symbols(asset_class: AssetClass, sub_class: Optional[str]) -> List[Sym
     # TODO - This is a hack to avoid doing this upstream and should be removed once data is cleaned
     df = df[df.Symbol == df.Symbol]
 
-    return [Symbol(ele, asset_class, sub_class) for ele in df["Symbol"].tolist()]
+    return [
+        Symbol(ele, asset_class, sub_class) for ele in df["Symbol"].tolist()
+    ]
 
 
 def read_data_file(
@@ -94,4 +98,6 @@ def read_data_file(
         else:
             raise ValueError(f"File type not supported: {file_path}")
     except Exception as e:
-        raise ValueError(f"Error reading data file: {file_path}. Error: {str(e)}")
+        raise ValueError(
+            f"Error reading data file: {file_path}. Error: {str(e)}"
+        )
