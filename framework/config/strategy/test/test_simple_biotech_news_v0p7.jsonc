@@ -1,0 +1,49 @@
+{
+    "name": "StrategyBiotechNews",
+    "symbol_sources": [
+        {
+            "asset_class": "us_equity",
+            "sub_class": "biotech"
+        }
+    ],
+    "data_providers": [
+        {
+            "asset_class": "us_equity",
+            "data_type": "daily_ohlc",
+            "provider": "polygon"
+        },
+        {
+            "asset_class": "us_equity",
+            "data_type": "news",
+            "provider": "biopharmcatalyst"
+        }
+    ],
+    "trade_config": {
+        "starting_cash": 50000,
+        "us_equity": {
+            "type": "simple_fixed",
+            /* allocate 1/4 of initial cash with each trade */
+            "trade_size_in_dollars": 12500,
+            "holding_period": "14_days"
+        }
+    },
+    "specific_config": {
+        "min_prev_daily_volume": 100e6,
+        "max_prev_daily_volume": 500e6,
+        "returns_window_leq_bound": -10,
+        "returns_window_geq_bound": 10,
+        "blacklisted_symbols": [],
+        "text_filters": [
+            "clincal",
+            "trial",
+            "study",
+            "phase",
+            "results",
+            "findings",
+            "fda",
+            "approve",
+            "accepts U.S. Food and Drug Administration"
+        ],
+        "include_short_trades": true
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "name": "StrategyCrossover",
+    "symbol_sources": [
+        {
+            "asset_class": "us_equity",
+            "sub_class": "test_1"
+        }
+    ],
+    "data_providers": [
+        {
+            "asset_class": "us_equity",
+            "data_type": "daily_ohlc",
+            "provider": "polygon"
+        }
+    ],
+    "trade_config": {
+        "starting_cash": 50000,
+        "us_equity": {
+            "type": "simple_fixed",
+            "trade_size_in_dollars": 12500,
+            "holding_period": "3_days"
+        }
+    },
+    "specific_config": {
+        "short_moving_average": 5,
+        "long_moving_average": 20
+    }
+}

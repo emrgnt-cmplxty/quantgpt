@@ -1,0 +1,18 @@
+# local dirs
+*__pycache__*
+dump/
+notebooks/*
+random/*
+results/*
+data/us_equities/*
+# random files
+**/*.db
+**/*.sqlite
+**/.DS_Store
+.vscode
+quant/
+sentient_trading.egg*
+coverage.xml
+build/*
+.coverage
+data/us_equity/*

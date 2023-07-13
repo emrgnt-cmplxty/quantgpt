@@ -1,0 +1,77 @@
+{
+    // The directory where the CSV files should be stored
+    "csv_dir": "data",
+    // The mode for data storage
+    "data_mode": "csv",
+    // The primary source of the data for this config
+    "data_source": "polygon",
+    // The asset class the data for this config
+    "data_asset_class": "us_equity",
+    // Other data in the config
+    "other_settings": {
+        "scale_to_ts_in_seconds": true,
+        "test_tickers": [
+            {
+                "ticker": "MRNA"
+            },
+            {
+                "ticker": "AAPL"
+            },
+            {
+                "ticker": "ACRX"
+            },
+            {
+                "ticker": "IBB"
+            }
+        ],
+        "ohlc_map": {
+            "t": "Timestamp",
+            "o": "Open",
+            "h": "High",
+            "l": "Low",
+            "c": "Close",
+            "v": "Volume",
+            "vw": "VWAP",
+            "n": "NTransactions"
+        },
+        "news_map": {
+            "id": "Id",
+            "publisher": "Publisher",
+            "title": "Title",
+            "author": "Author",
+            "published_utc": "PublishedUTC",
+            "article_url": "ArticleURL",
+            "tickers": "Tickers",
+            "image_url": "ImageURL",
+            "description": "Description",
+            "keywords": "Keywords"
+        },
+        "financials_map": {
+            "id": "Id",
+            "start_date": "StartDate",
+            "end_date": "EndDate",
+            "timeframe": "TimeFrame",
+            "fiscal_period": "FiscalPeriod",
+            "fiscal_year": "FiscalYear",
+            "cik": "CIK",
+            "sic": "SIC",
+            "tickers": "Tickers",
+            "company_name": "CompanyName",
+            "financials": "Financials"
+        },
+        "tickers_map": {
+            "ticker": "Symbol",
+            "name": "Name",
+            "market": "Market",
+            "locale": "Locale",
+            "primary_exchange": "PrimaryExchange",
+            "type": "Type",
+            "active": "Active",
+            "currency_name": "CurrencyName",
+            "cik": "CIK",
+            "composite_figi": "CompositeFigi",
+            "share_class_figi": "ShareClassFigi",
+            "last_updated_utc": "LastUpdatedUTC"
+        }
+    }
+}

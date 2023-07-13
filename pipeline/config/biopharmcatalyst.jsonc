@@ -1,0 +1,46 @@
+{
+    // The directory where the CSV files should be stored
+    "csv_dir": "data",
+    // The mode for data storage
+    "data_mode": "csv",
+    // The primary source of the data for this config
+    "data_source": "biopharmcatalyst",
+    // The asset class the data for this config
+    "data_asset_class": "us_equity",
+    "other_settings": {
+        "scale_to_ts_in_seconds": true,
+        "test_tickers": [
+            {
+                "Symbol": "MRNA"
+            },
+            {
+                "Symbol": "ACRX"
+            }
+        ],
+        "max_pages": 100,
+        "news_data_mapping": {
+            "created_at": "BiopharmCreatedAt",
+            "updated_at": "BiopharmUpdatedAt",
+            "id": "BiopharmId",
+            "external_id": "BiopharmExternalId",
+            "hidden": "BiopharmHidden",
+            "hidden_reason": "BiopharmHiddenReason",
+            "formatted_date": "BiopharmFormattedDate",
+            "shortened_title": "BiopharmShortenedTitle",
+            "ticker": "Symbol",
+            "data": "Data",
+            "sub_id": "SubId",
+            "sub_url": "URL",
+            "sub_body": "Body",
+            "sub_tags": "Tags",
+            "sub_image": "Image",
+            "sub_title": "Title",
+            "sub_author": "Author",
+            "sub_stocks": "Stocks",
+            "sub_teaser": "Teaser",
+            "sub_created": "Created",
+            "sub_updated": "Updated",
+            "sub_channels": "Channels"
+        }
+    }
+}

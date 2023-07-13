@@ -1,0 +1,1640 @@
+{
+    "2022-07-31": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-01": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-02": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-03": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-04": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-05": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-06": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-07": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-08": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-09": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-10": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-11": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-12": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-13": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-14": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-15": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-16": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-17": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-18": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-19": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-20": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-21": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-22": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-23": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-24": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-25": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-26": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-27": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-28": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-29": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-30": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-08-31": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-01": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-02": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-03": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-04": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-05": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-06": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-07": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-08": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-09": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-10": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-11": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-12": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-13": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-14": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-15": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-16": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-17": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-18": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-19": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-20": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-21": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-22": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-23": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-24": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-25": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-26": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-27": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-28": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-29": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-09-30": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+    "2022-10-01": [
+        {
+            "test_simple_biotech_news_v0p0": {
+                "weight": 1,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p0"
+                }
+            }
+        },
+        {
+            "test_simple_biotech_news_v0p1": {
+                "weight": 2,
+                "config_path": {
+                    "base": "framework",
+                    "interior": "config",
+                    "config_type": "strategy",
+                    "prod_type": "test",
+                    "name": "test_simple_biotech_news_v0p1"
+                }
+            }
+        }
+    ],
+}

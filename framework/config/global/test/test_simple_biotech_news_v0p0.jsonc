@@ -1,0 +1,24 @@
+{
+    "calendar_name": "NYSE",
+    /* Where do we see strategy sizing? */
+    "allocation_config": {
+        "base": "framework",
+        "interior": "config",
+        "config_type": "allocation",
+        "prod_type": "test",
+        "name": "test_alloc_v0p0"
+    },
+    /* When does the strategy start trading each day? */
+    "delta_to_close_timestamp": "00:00:00",
+    /* For now, multiprocessing is only used during data loadout */
+    "max_cores": 8,
+    /* sqlite and csv are the two primary supported data sources */
+    /* for each source we specify a connection type connection */
+    "db_connections": {
+        "test_yahoo": "csv",
+        "test_polygon": "csv",
+        "test_biopharmcatalyst": "csv"
+    },
+    "trading_times": "nyc_daily_open",
+    "observed_data_lookback": "30_days"
+}

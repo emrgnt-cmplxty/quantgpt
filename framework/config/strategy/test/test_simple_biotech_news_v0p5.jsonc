@@ -1,0 +1,61 @@
+{
+    "name": "StrategyBiotechNews",
+    "symbol_sources": [
+        {
+            "asset_class": "us_equity",
+            "sub_class": "biotech"
+        }
+    ],
+    "data_providers": [
+        {
+            "asset_class": "us_equity",
+            "data_type": "daily_ohlc",
+            "provider": "polygon"
+        },
+        {
+            "asset_class": "us_equity",
+            "data_type": "news",
+            "provider": "biopharmcatalyst"
+        }
+    ],
+    "trade_config": {
+        "starting_cash": 50000,
+        "us_equity": {
+            "type": "simple_fixed",
+            /* allocate 1/4 of initial cash with each trade */
+            "trade_size_in_dollars": 12500,
+            "holding_period": "30_days"
+        }
+    },
+    "specific_config": {
+        "min_prev_daily_volume": 100000000,
+        "max_prev_daily_volume": 100000000000,
+        /* busted tickers, likely because of acq or failure */
+        "blacklisted_symbols": [],
+        "text_filters": [
+            "fda",
+            "approves",
+            "accepts U.S. Food and Drug Administration",
+            "trial",
+            "study",
+            "phase",
+            "results",
+            "findings",
+            "appointment",
+            "appoints",
+            "board",
+            "director",
+            "executive",
+            "officer",
+            "present",
+            "participate",
+            "conference",
+            "appointment",
+            "appoints",
+            "board",
+            "director",
+            "executive",
+            "officer"
+        ]
+    },
+}
