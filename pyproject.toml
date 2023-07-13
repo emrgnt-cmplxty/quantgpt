@@ -2,10 +2,10 @@
 requires = ["setuptools", "wheel"]
 
 [tool.poetry]
-name = "sentient_trading"
+name = "quant_gpt"
 version = "0.1.0"
 description = "A sentient trading system."
-authors = ["owen@sentienttrading.com"]
+authors = ["owen@emergentagi.org"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -51,7 +51,7 @@ multi_line_output = 3
 include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
-line_length = 99
+line_length = 79
 skip_glob = "quant/*"
 
 [tool.mypy]
