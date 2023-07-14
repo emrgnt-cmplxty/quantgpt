@@ -13,6 +13,33 @@ Please note that while `StrategyBiotechNews` was backtested and showed a Sharpe 
 
 Dependencies for this project are managed using a `requirements.txt` file.
 
+
+## Installation
+
+1. Clone the repository and navigate to the project directory:
+
+   ```bash
+   git clone https://github.com/sentient-productions/QuantGPT && cd QuantGPT
+   ```
+   
+2. Create a virtual environment and activate it:
+
+   ```bash
+   python3 -m venv quant && source quant/bin/activate
+   ```
+   
+3. Upgrade pip:
+
+   ```bash
+   python3 -m pip install --upgrade pip
+   ```
+   
+4. Install the project in editable mode:
+
+   ```bash
+   pip3 install -e .
+   ```
+
 ## Configuration
 
 Strategies implemented in `QuantGPT` use a configuration file in JSON format. Here's an example:
@@ -49,6 +76,13 @@ The output of the strategies includes results specific to each strategy. For `St
 
 ## Usage
 
+
+To scrape financial data, use the command:
+
+```bash
+python3 -m quantgpt.pipeline.main
+```
+
 To run a strategy, use a command following this format:
 
 ```bash
@@ -59,6 +93,3 @@ python3 -m quantgpt.core.main --start 2020-08-01 --global_config_path_str  quant
 
 `QuantGPT` is a work in progress. The framework and its strategies are experimental and should be used as-is and for educational purposes only. Further validation and testing are required for live trading.
 
----
-
-This draft is intended to be flexible and can be modified to better suit the evolving nature of your `QuantGPT` project.
