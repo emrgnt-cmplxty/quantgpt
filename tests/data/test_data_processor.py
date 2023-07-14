@@ -1,4 +1,5 @@
 import pytest
+
 from quantgpt.core.data.manager import DataManager
 from quantgpt.core.data.processor import DataProcessor
 from quantgpt.financial_tools import types as ft

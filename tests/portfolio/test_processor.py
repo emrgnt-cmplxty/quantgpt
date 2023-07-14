@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
 
 import pytest
+
 from quantgpt.core.portfolio.processor import PortfolioProcessor
 from quantgpt.financial_tools import types as ft
 from quantgpt.financial_tools.utils import (

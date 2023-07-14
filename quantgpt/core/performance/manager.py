@@ -381,16 +381,19 @@ class PerformanceManager:
 
         for symbol in positions.keys():
             position = positions[symbol]
-
-            # Calculate position PnL
-            close_diff = (
-                future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][
-                    symbol
-                ]["Close"][1]
-                - future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][
-                    symbol
-                ]["Close"][0]
-            )
+            # TODO - Understand why this try-except block is needed
+            try:
+                # Calculate position PnL
+                close_diff = (
+                    future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][
+                        symbol
+                    ]["Close"][1]
+                    - future_data[symbol.asset_class][ft.DataType.DAILY_OHLC][
+                        symbol
+                    ]["Close"][0]
+                )
+            except:
+                close_diff = 0
             pnl_by_symbol[symbol] = close_diff * position.quantity
 
         return pnl_by_symbol
@@ -420,7 +423,6 @@ class PerformanceManager:
         - calculated_pnl (Dict[str, List[float]]): Dictionary containing PnL data.
         """
         new_trade_pnl_t = self._calculate_new_trade_pnl(trades, future_data)
-
         positional_pnl_tp1 = self._calculate_positional_pnl(
             positions, future_data
         )

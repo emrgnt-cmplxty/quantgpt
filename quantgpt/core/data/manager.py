@@ -32,8 +32,8 @@ class DataWranger:
         if len(df) == 0:
             return df
         if data_type == ft.DataType.NEWS and (
-            data_provider == ft.DataProviderName.BIOPHARMCATALYST
-            or data_provider == ft.DataProviderName.TEST_BIOPHARMCATALYST
+            data_provider == ft.DataProviderName.SCRAPED
+            or data_provider == ft.DataProviderName.TEST_SCRAPED
         ):
             df["Timestamp"] = df["MappedCloseTimestamp"]
             df = df.drop(columns=["MappedCloseTimestamp"])

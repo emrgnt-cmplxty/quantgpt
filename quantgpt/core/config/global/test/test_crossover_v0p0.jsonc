@@ -9,10 +9,10 @@
     "db_connections": {
         "test_yahoo": "csv",
         "yahoo": "csv",
-        "test_polygon": "csv",
+        "test_equities": "csv",
         "polygon": "csv",
-        "test_biopharmcatalyst": "csv",
-        "biopharmcatalyst": "csv"
+        "test_scraped": "csv",
+        "scraped": "csv"
     },
     "generate_unit_allocation": true,
     "strategy_config_list": [

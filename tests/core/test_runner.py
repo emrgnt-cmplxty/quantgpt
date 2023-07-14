@@ -3,11 +3,11 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 import pytest
-from quantgpt.financial_tools import types as ft
 
 from quantgpt.core.portfolio.manager import PortfolioManager
 from quantgpt.core.runner import BacktestMode
 from quantgpt.core.strategy.base import StrategyBase
+from quantgpt.financial_tools import types as ft
 
 ASSET_CLASS = ft.AssetClass.US_EQUITY
 SYMBOL_AAPL = ft.Symbol("AAPL")

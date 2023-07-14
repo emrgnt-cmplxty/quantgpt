@@ -2,10 +2,10 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
-from quantgpt.financial_tools.untyped_utils import nested_dict
 from quantgpt.financial_tools.types.basic_types import StrategyName, Timestamp
 from quantgpt.financial_tools.types.enums import SignalType, TradeType
 from quantgpt.financial_tools.types.symbol import Symbol
+from quantgpt.financial_tools.untyped_utils import nested_dict
 
 
 # Classes for Signal, Position, and Trade

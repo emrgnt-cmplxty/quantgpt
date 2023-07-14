@@ -113,7 +113,7 @@ class TestUtils(unittest.TestCase):
 
     def test_read_data_file(self):
         data_type = DataType.DAILY_OHLC
-        provider_name = DataProviderName.TEST_POLYGON
+        provider_name = DataProviderName.TEST_EQUITIES
         symbol = Symbol("ACRX", AssetClass.US_EQUITY, None)
         db_connection = DBConnections.CSV
         # Assume the ACRX.csv file exists in the data/equity/daily_ohlc/test directory

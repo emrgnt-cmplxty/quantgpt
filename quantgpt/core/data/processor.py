@@ -6,6 +6,8 @@ from multiprocessing import Pool
 from typing import Dict, Generator, List, Tuple
 
 import pandas as pd
+
+from quantgpt.core.data.manager import DataManager
 from quantgpt.financial_tools import types as ft
 from quantgpt.financial_tools.utils import (
     convert_datestr_to_datetime,
@@ -13,8 +15,6 @@ from quantgpt.financial_tools.utils import (
     convert_time_delta_str,
     nested_dict,
 )
-
-from quantgpt.core.data.manager import DataManager
 
 logger = logging.getLogger(__name__)
 

@@ -67,6 +67,7 @@ def check_target_files(global_config, file_type="pnl", max_date=""):
                     regression_file["Timestamp"]
                     < convert_est_datestr_to_unix_timestamp(max_date)
                 ]
+
             # Check if files are equal
             assert regression_file.equals(new_file), "PnL files are not equal"
             checked_aggregate = True

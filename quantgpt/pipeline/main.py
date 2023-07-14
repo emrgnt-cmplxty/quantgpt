@@ -3,10 +3,9 @@ import logging.config
 import os
 
 from quantgpt.financial_tools.utils import get_logging_config, home_path
-
 from quantgpt.pipeline.data_handler import DataHandler
-from quantgpt.pipeline.scrapers.biopharmcatalyst import (
-    BiopharmCatalystDataScraper,
+from quantgpt.pipeline.scrapers.scraped import (
+    scrapedDataScraper,
 )
 from quantgpt.pipeline.scrapers.polygon import PolygonDataScraper
 
@@ -41,8 +40,8 @@ def main(args: argparse.Namespace) -> None:
             exclude_existing=args.exclude_existing,
             is_test_mode=args.is_test_run,
         ).backfill()
-    elif args.scraper == "biopharmcatalyst":
-        BiopharmCatalystDataScraper(
+    elif args.scraper == "scraped":
+        scrapedDataScraper(
             data_handler,
             args.chrome_driver_path,
             is_test_mode=args.is_test_run,

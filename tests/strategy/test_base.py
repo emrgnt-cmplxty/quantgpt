@@ -1,9 +1,9 @@
 from unittest.mock import MagicMock
 
 import pytest
-from quantgpt.financial_tools import types as ft
 
 from quantgpt.core.strategy.base import StrategyBase
+from quantgpt.financial_tools import types as ft
 
 
 @pytest.fixture

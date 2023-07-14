@@ -2,6 +2,7 @@ from collections import defaultdict
 
 import pandas as pd
 import pytest
+
 from quantgpt.core.data.manager import DataManager
 from quantgpt.financial_tools import types as ft
 

@@ -3,19 +3,19 @@
     "symbol_sources": [
         {
             "asset_class": "us_equity",
-            "sub_class": "biotech"
+            "sub_class": "test_0"
         }
     ],
     "data_providers": [
         {
             "asset_class": "us_equity",
             "data_type": "daily_ohlc",
-            "provider": "polygon"
+            "provider": "test_equities"
         },
         {
             "asset_class": "us_equity",
             "data_type": "news",
-            "provider": "biopharmcatalyst"
+            "provider": "test_scraped"
         }
     ],
     "trade_config": {
@@ -24,35 +24,16 @@
             "type": "simple_fixed",
             /* allocate 1/4 of initial cash with each trade */
             "trade_size_in_dollars": 12500,
-            "holding_period": "14_days"
+            "holding_period": "30_days"
         }
     },
     "specific_config": {
-        "min_prev_daily_volume": 1e6,
-        "max_prev_daily_volume": 500e9,
-        "returns_window_beta_adj_z_leq_bound": -2,
-        "returns_window_beta_adj_z_geq_bound": 3,
+        "min_avg_daily_volume": 100000,
+        "max_avg_daily_volume": 1000000,
+        /* busted tickers, likely because of acq or failure */
         "blacklisted_symbols": [],
-        "text_filters": [
-            "topline",
-            "clincal",
-            "trial",
-            "study",
-            "phase",
-            "findings",
-            "fda",
-            "approve",
-            "accepts",
-            "publish",
-            "positive",
-            "U.S. Food and Drug Administration"
-        ],
-        "include_short_trades": true,
-        "do_hedge": true,
-        /* Note, the next option will change the the trade size to no longer be simple fixed */
-        /* instead, the trade size will be scaled by the ratio of the index ETF to the traded asset volatility */
-        "scale_trade_to_etf_vol": true,
-        "exclude_intraday": true,
-        "signal_window_size": 20
+        "primary_title_text_filters": [
+            "acceptance"
+        ]
     }
 }
