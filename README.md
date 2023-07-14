@@ -1,8 +1,64 @@
-<div class="markdown prose w-full break-words dark:prose-invert dark"><h1>Quantitative Trading Framework</h1><p>This project provides a systematic trading framework for backtesting and executing various trading strategies using financial data. It includes data scraping, strategy implementation, portfolio management, and performance evaluation with a modular architecture.</p><h2>Table of Contents</h2><ul><li><a href="#requirements" target="_new">Requirements</a></li><li><a href="#installation" target="_new">Installation</a></li><li><a href="#usage" target="_new">Usage</a><ul><li><a href="#data-scraping" target="_new">Data Scraping</a></li><li><a href="#backtesting-strategies" target="_new">Backtesting Strategies</a></li><li><a href="#running-tests" target="_new">Running Tests</a></li></ul></li><li><a href="#project-structure" target="_new">Project Structure</a></li><li><a href="#contributing" target="_new">Contributing</a></li><li><a href="#license" target="_new">License</a></li></ul><h2>Requirements</h2><ul><li>Python 3.9.x</li><li>Git</li></ul><h2>Installation</h2><ol><li>Clone the repository and change to the project directory:</li></ol><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">git <span class="hljs-built_in">clone</span> https://github.com/sentient-productions/QuantFramework &amp;&amp; <span class="hljs-built_in">cd</span> QuantFramework
-</code></div></div></pre><ol start="2"><li>Create a virtual environment and activate it:</li></ol><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">python3 -m venv quant &amp;&amp; <span class="hljs-built_in">source</span> quant/bin/activate
-</code></div></div></pre><ol start="3"><li>Upgrade pip:</li></ol><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">python3 -m pip install --upgrade pip
-</code></div></div></pre><ol start="4"><li>Install the project in editable mode:</li></ol><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">pip3 install -e .
-</code></div></div></pre><h2>Usage</h2><h3>Data Scraping</h3><p>To scrape financial data, run the following command:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">python3 -m pipeline.main
-</code></div></div></pre><h3>Backtesting Strategies</h3><p>To backtest trading strategies using the included test data, run:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">python3 -m core.main
-</code></div></div></pre><h3>Running Tests</h3><p>To run the test suite, execute:</p><pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-bash">pytest
-</code></div></div></pre><p><strong>Note</strong>: Pre-commit hooks are defined in <code>.pre-commit-config.yaml</code> and will automatically run when you commit code.</p><h2>Project Structure</h2><ul><li><code>airflow</code>: Contains the Airflow configuration and main entry point for the Airflow instance.</li><li><code>financial_tools</code>: Contains the core financial tools, including basic types, config types, constants, and utility functions.</li><li><code>framework</code>: Contains the main trading framework, strategy implementations, portfolio management, and performance evaluation components.<ul><li><code>configs</code>: Contains allocation, global, and strategy configurations.</li><li><code>evaluation</code>: Performance evaluation and plotting components.</li><li><code>strategies</code>: Trading strategy implementations and tests.</li></ul></li><li><code>pipeline</code>: Contains the data pipeline, including data handlers, scrapers, and configuration files.</li></ul><h2>Contributing</h2><p>Contributions are welcome! Please follow the <a href="https://opensource.google/conduct/" target="_new">Google open source community guidelines</a> when contributing to this project. Make sure to check for any pre-commit hooks defined in <code>.pre-commit-config.yaml</code>.</p><h2>License</h2><p>This project is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_new">Apache License, Version 2.0</a>.</p></div>
+
+# QuantGPT
+
+This repository houses the `QuantGPT` project, an evolving framework for implementing quantitative trading strategies that use large language models (LLMs). It includes an experimental trading strategy, `StrategyBiotechNews`, as its primary implementation. This strategy uses an LLM (GPT-4) to evaluate the expected impact of biotech company press releases on their stock performance.
+
+## Overview
+
+`QuantGPT` provides a basis for developing and testing quantitative strategies that incorporate LLMs for sentiment analysis and other forms of textual analysis. The `StrategyBiotechNews` exemplifies this, combining market signals with sentiment output derived from press releases to generate trading signals.
+
+Please note that while `StrategyBiotechNews` was backtested and showed a Sharpe ratio of ~2 over a 2-year window, these results might be biased, and this strategy, like all other aspects of `QuantGPT`, is intended for educational purposes and should not be used for live trading without thorough additional testing and validation.
+
+## Dependencies
+
+Dependencies for this project are managed using a `requirements.txt` file.
+
+## Configuration
+
+Strategies implemented in `QuantGPT` use a configuration file in JSON format. Here's an example:
+
+```json
+{
+    "calendar_name": "NYSE",
+    "allocation_config": {
+        "base": "core",
+        "interior": "config",
+        "config_type": "allocation",
+        "prod_type": "test",
+        "name": "test_alloc_v0p0"
+    },
+    "delta_to_close_timestamp": "00:00:00",
+    "max_cores": 8,
+    "db_connections": {
+        "scraped": "csv",
+        "test_equities": "csv",
+        "test_scraped": "csv"
+    },
+    "trading_times": "nyc_daily_open",
+    "observed_data_lookback": "30_days"
+}
+```
+
+## Data
+
+The input data for the strategies consists of various data types, depending on the specific strategy. For `StrategyBiotechNews`, daily Open/High/Low/Close (OHLC) stock price data and press releases, both scraped from Yahoo Finance, are used.
+
+## Output
+
+The output of the strategies includes results specific to each strategy. For `StrategyBiotechNews`, this includes PnL results and position results, stored in CSV format. The PnL results contain information about new trades and positional trades for each timestamp, while the position results contain information about the average price, quantity, symbol, and timestamp for each position.
+
+## Usage
+
+To run a strategy, use a command following this format:
+
+```bash
+python3 -m quantgpt.core.main --start 2020-08-01 --global_config_path_str  quantgpt_core_config_global_test_test_simple_biotech_news_v0p0
+```
+
+## Limitations
+
+`QuantGPT` is a work in progress. The framework and its strategies are experimental and should be used as-is and for educational purposes only. Further validation and testing are required for live trading.
+
+---
+
+This draft is intended to be flexible and can be modified to better suit the evolving nature of your `QuantGPT` project.
