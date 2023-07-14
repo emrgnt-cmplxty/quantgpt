@@ -5,9 +5,9 @@ from typing import Dict, List
 
 import pandas as pd
 import requests
+
 from quantgpt.financial_tools import types as ft
 from quantgpt.financial_tools.utils import build_symbols, home_path
-
 from quantgpt.pipeline.data_handler import DataHandler
 from quantgpt.pipeline.scrapers.data_scraper import DataScraper
 

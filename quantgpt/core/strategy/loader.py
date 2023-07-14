@@ -1,12 +1,11 @@
 from typing import Union
 
-from quantgpt.financial_tools import types as ft
-
 from quantgpt.core.data.processor import DataProcessor
-from quantgpt.core.strategy.biotech_news import (
+from quantgpt.core.strategy.biotech_news import (  # noqa: F401
     StrategyBiotechNews,
-)  # noqa: F401
+)
 from quantgpt.core.strategy.crossover import StrategyCrossover  # noqa: F401
+from quantgpt.financial_tools import types as ft
 
 # TODO - figure out how to expand this type hint as we add more strategies
 StrategyType = Union[StrategyBiotechNews, StrategyCrossover]

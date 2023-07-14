@@ -25,11 +25,11 @@ class AssetClass(Enum):
 
 class DataProviderName(Enum):
     POLYGON = "polygon"
-    TEST_POLYGON = "test_polygon"
+    TEST_EQUITIES = "test_equities"
     YAHOO = "yahoo"
     TEST_YAHOO = "test_yahoo"
-    BIOPHARMCATALYST = "biopharmcatalyst"
-    TEST_BIOPHARMCATALYST = "test_biopharmcatalyst"
+    SCRAPED = "scraped"
+    TEST_SCRAPED = "test_scraped"
 
     def __str__(self):
         return self.value

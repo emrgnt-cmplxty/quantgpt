@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 import pytz
+
 from quantgpt.core.portfolio.manager import PortfolioManager
 from quantgpt.financial_tools import types as ft
 from quantgpt.financial_tools.utils import (

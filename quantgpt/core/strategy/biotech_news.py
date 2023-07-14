@@ -1,10 +1,12 @@
 import logging
 import math
 from datetime import datetime
+from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Union, cast
 
 import numpy as np
 
+from quantgpt.core.data.cache import DataCache
 from quantgpt.core.data.processor import DataProcessor
 from quantgpt.core.strategy.base import StrategyBase
 from quantgpt.financial_tools import types as ft
@@ -16,6 +18,14 @@ IBB_SYMBOL = ft.Symbol("IBB", ft.AssetClass.US_EQUITY, "biotech")
 
 
 class StrategyBiotechNews(StrategyBase):
+    class StrategyVersion(Enum):
+        SENTIMENT_V0 = "sentiment_v0"
+        SENTIMENT_V1 = "sentiment_v1"
+        N_A = "n/a"
+
+        def __str__(self):
+            return self.value
+
     def __init__(
         self,
         data_processor: DataProcessor,
@@ -24,19 +34,19 @@ class StrategyBiotechNews(StrategyBase):
     ) -> None:
         super().__init__(data_processor, global_config, strategy_config)
         # Initialize any additional variables for StrategyBiotechNews
-        self.min_prev_daily_volume = float(
+        self.min_avg_daily_volume = float(
             cast(
                 float,
                 self.strategy_config["specific_config"][
-                    "min_prev_daily_volume"
+                    "min_avg_daily_volume"
                 ],
             )
         )
-        self.max_prev_daily_volume = float(
+        self.max_avg_daily_volume = float(
             cast(
                 float,
                 self.strategy_config["specific_config"][
-                    "max_prev_daily_volume"
+                    "max_avg_daily_volume"
                 ],
             )
         )
@@ -44,58 +54,31 @@ class StrategyBiotechNews(StrategyBase):
             List[str],
             self.strategy_config["specific_config"]["blacklisted_symbols"],
         )
-        self.text_filters = cast(
-            List[str], self.strategy_config["specific_config"]["text_filters"]
+        self.primary_title_text_filters = cast(
+            List[str],
+            self.strategy_config["specific_config"][
+                "primary_title_text_filters"
+            ],
         )
-        self.returns_window_leq_bound = cast(
+        self.secondary_title_text_filters = cast(
+            List[str],
+            self.strategy_config["specific_config"].get(
+                "secondary_title_text_filters", [""]
+            ),
+        )
+        self.body_text_filters = cast(
+            List[str],
+            self.strategy_config["specific_config"].get(
+                "body_text_filters", ["ZZZ_ThisWillFail_ZZZ"]
+            ),
+        )
+        self.signal_leq_bound = cast(
             Optional[float],
-            self.strategy_config["specific_config"].get(
-                "returns_window_leq_bound"
-            ),
+            self.strategy_config["specific_config"].get("signal_leq_bound"),
         )
-        self.returns_window_geq_bound = cast(
+        self.signal_geq_bound = cast(
             Optional[float],
-            self.strategy_config["specific_config"].get(
-                "returns_window_geq_bound"
-            ),
-        )
-        self.returns_window_beta_adj_z_leq_bound = cast(
-            Optional[float],
-            self.strategy_config["specific_config"].get(
-                "returns_window_beta_adj_z_leq_bound"
-            ),
-        )
-        self.returns_window_beta_adj_z_geq_bound = cast(
-            Optional[float],
-            self.strategy_config["specific_config"].get(
-                "returns_window_beta_adj_z_geq_bound"
-            ),
-        )
-
-        self.observed_releases: Set[str] = set([])
-        self.include_short_trades = cast(
-            bool,
-            self.strategy_config["specific_config"].get(
-                "include_short_trades", False
-            ),
-        )
-        self.hedge_strategy = cast(
-            bool,
-            self.strategy_config["specific_config"].get(
-                "hedge_strategy", False
-            ),
-        )
-        self.scale_trade_to_etf_vol = cast(
-            bool,
-            self.strategy_config["specific_config"].get(
-                "scale_trade_to_etf_vol", False
-            ),
-        )
-        self.exclude_intraday = cast(
-            bool,
-            self.strategy_config["specific_config"].get(
-                "exclude_intraday", False
-            ),
+            self.strategy_config["specific_config"].get("signal_geq_bound"),
         )
         self.signal_window_size = cast(
             int,
@@ -104,18 +87,66 @@ class StrategyBiotechNews(StrategyBase):
             ),
         )
 
+        self.do_short = cast(
+            bool,
+            self.strategy_config["specific_config"].get("do_short", False),
+        )
+        self.short_adj_fraction = cast(
+            float,
+            self.strategy_config["specific_config"].get(
+                "short_adj_fraction", 0.5
+            ),
+        )
+
+        self.do_hedge = cast(
+            bool,
+            self.strategy_config["specific_config"].get("do_hedge", False),
+        )
+        self.do_scale_trade_to_etf_vol = cast(
+            bool,
+            self.strategy_config["specific_config"].get(
+                "do_scale_trade_to_etf_vol", False
+            ),
+        )
+        self.do_intraday = cast(
+            bool,
+            self.strategy_config["specific_config"].get("do_intraday", False),
+        )
+        self.use_news_sentiment = cast(
+            bool,
+            self.strategy_config["specific_config"].get(
+                "use_news_sentiment", False
+            ),
+        )
+        self.signal_type = cast(
+            str,
+            self.strategy_config["specific_config"].get(
+                "signal_type", "symbol_beta_adj_z_window"
+            ),
+        )
+        self.sentiment_strategy_version = cast(
+            str,
+            self.StrategyVersion(
+                self.strategy_config["specific_config"].get(
+                    "sentiment_strategy_version", "sentiment_v0"
+                )
+            ),
+        )
+
         assert (
-            len(self.text_filters) > 0
+            len(self.primary_title_text_filters) > 0
         ), "Must pass a non-empty list of text filters."
         logger.info(
             f"Running strategy biotech news with config: {strategy_config}"
         )
-        if self.hedge_strategy:
-            assert (
-                IBB_SYMBOL
-                in self.global_config["symbols"][ft.AssetClass.US_EQUITY]
-            ), "IBB symbol must be in global config symbols."
 
+        self.observed_releases: Set[str] = set([])
+        if self.use_news_sentiment:
+            self.data_cache = DataCache(
+                cache_file="cache.pkl",
+                initial_prompt_file="prompt_init.txt",
+                final_prompt_file="prompt_suffix.txt",
+            )
         self.short_trade_counter = 0
         self.long_trade_counter = 0
 
@@ -129,146 +160,204 @@ class StrategyBiotechNews(StrategyBase):
         :param observed_data: Data from previous trading days.
         :return: A list of trade signals.
         """
-        signals = []
-
+        # Simple quality control checks
+        assert (
+            ft.AssetClass.US_EQUITY in observed_data
+        ), "No US equities data found in observed data."
         assert (
             IBB_SYMBOL
             in observed_data[ft.AssetClass.US_EQUITY][ft.DataType.DAILY_OHLC]
         ), "IBB symbol must be in observed data."
+        if ft.DataType.NEWS not in observed_data[ft.AssetClass.US_EQUITY]:
+            logger.warning(
+                f"No US equities news data found in observed data on timestamp = {timestamp}, please double check the data to be sure this is expected."
+            )
+            return []
 
+        signals = []
         index_daily_ohlc = observed_data[ft.AssetClass.US_EQUITY][
             ft.DataType.DAILY_OHLC
         ][IBB_SYMBOL]
         (
             index_returns_window,
             index_returns_series,
-            index_volatility,
+            index_vol,
         ) = self.get_series_vars(index_daily_ohlc)
-        assert (
-            ft.AssetClass.US_EQUITY in observed_data
-        ), "No US equities data found in observed data."
-        if ft.DataType.NEWS not in observed_data[ft.AssetClass.US_EQUITY]:
-            logger.warning(
-                f"No US equities news data found in observed data on timestamp = {timestamp}, please double check the data to be sure this is expected."
+
+        for symbol, releases in observed_data[ft.AssetClass.US_EQUITY][
+            ft.DataType.NEWS
+        ].items():
+            symbol_daily_ohlc = observed_data[ft.AssetClass.US_EQUITY][
+                ft.DataType.DAILY_OHLC
+            ][symbol]
+            if len(symbol_daily_ohlc["Close"]) != len(
+                index_daily_ohlc["Close"]
+            ):
+                continue
+
+            (
+                symbol_returns_window,
+                symbol_returns_series,
+                symbol_vol,
+            ) = self.get_series_vars(symbol_daily_ohlc)
+
+            # Beta is used to determine hedge sizes later on
+            beta = StrategyBiotechNews._calculate_beta(
+                symbol_returns_series, index_returns_series
             )
-        if (
-            ft.AssetClass.US_EQUITY in observed_data
-            and ft.DataType.NEWS in observed_data[ft.AssetClass.US_EQUITY]
-        ):
-            news_data = observed_data[ft.AssetClass.US_EQUITY][
-                ft.DataType.NEWS
-            ]
-            for symbol, releases in news_data.items():
-                symbol_daily_ohlc = observed_data[ft.AssetClass.US_EQUITY][
-                    ft.DataType.DAILY_OHLC
-                ][symbol]
-                if len(symbol_daily_ohlc["Close"]) != len(
-                    index_daily_ohlc["Close"]
-                ):
-                    continue
 
-                (
-                    symbol_returns_window,
-                    symbol_returns_series,
-                    symbol_volatility,
-                ) = self.get_series_vars(symbol_daily_ohlc)
-
-                beta = self.calculate_beta(
-                    symbol_returns_series, index_returns_series
-                )
-                beta_adj_z_returns = (
+            if self.signal_type == "symbol_beta_adj_z_window":
+                symbol_beta_adj_z_returns = (
                     symbol_returns_series - beta * index_returns_series
                 )
-                beta_adj_volatility = self.calculate_volatility(
-                    beta_adj_z_returns
+                symbol_beta_adj_vol = StrategyBiotechNews._calculate_vol(
+                    symbol_beta_adj_z_returns
                 )
-                symbol_returns_window_beta_adj_z = (
+                symbol_signal_value = (
                     symbol_returns_window - beta * index_returns_window
-                ) / (beta_adj_volatility * math.sqrt(self.signal_window_size))
-                symbol_signal_value = symbol_returns_window
-                if (
-                    self.returns_window_beta_adj_z_leq_bound is not None
-                    or self.returns_window_beta_adj_z_geq_bound is not None
-                ):
-                    symbol_signal_value = symbol_returns_window_beta_adj_z
+                ) / (symbol_beta_adj_vol * math.sqrt(self.signal_window_size))
+            elif self.signal_type == "symbol_z_window":
+                symbol_signal_value = symbol_returns_window / symbol_vol
+            else:
+                raise ValueError("Invalid signal type.")
 
-                if self._check_conditions_for_symbol(
-                    symbol,
-                    symbol_daily_ohlc,
-                    symbol_returns_window,
-                    symbol_returns_window_beta_adj_z,
-                ):
-                    for _, release in releases[::-1].iterrows():
-                        if self._check_conditions_for_release(
-                            release, timestamp
-                        ):
-                            title = release["Title"]
+            if self._check_conditions_for_symbol(
+                symbol,
+                symbol_daily_ohlc,
+                symbol_signal_value,
+            ):
+                for _, release in releases[::-1].iterrows():
+                    if self._check_conditions_for_release(release, timestamp):
+                        title = release["Title"]
+                        body = release["Body"]
+                        trade_size = 1.0
 
-                            trade_size = 1.0
+                        long_signal, short_signal = False, False
+                        category = ""
+                        if self.use_news_sentiment:
+                            sentiment = self.data_cache.get_result(title, body)
+                            category = self.data_cache.categorize_result(
+                                sentiment
+                            )
+
+                            # # SENTIMENT MEAN REVERSION V0
+                            # Filter long/short signals on category
+                            # Very simple approach, just re-maps NEGATIVE to short signal
                             if (
-                                self.scale_trade_to_etf_vol
-                                or self.hedge_strategy
+                                self.sentiment_strategy_version
+                                == self.StrategyVersion.SENTIMENT_V0
                             ):
-                                assert (
-                                    index_daily_ohlc is not None
-                                ), "IBB daily OHLC data is None when it is expected to be not-none."
-
-                            if (
-                                self.scale_trade_to_etf_vol
-                                and index_daily_ohlc is not None
-                            ):
-                                vol_ratio = (
-                                    index_volatility / symbol_volatility
+                                long_signal = symbol_signal_value <= 0
+                                long_signal = long_signal and (
+                                    category
+                                    == DataCache.Category.EXTREMELY_POSITIVE
+                                    or category
+                                    == DataCache.Category.VERY_POSITIVE
+                                    or category == DataCache.Category.POSITIVE
+                                    or category == DataCache.Category.NEUTRAL
                                 )
-                                trade_size *= vol_ratio
 
-                            if symbol_signal_value > 0:
-                                # Half weight for short trades
-                                trade_size *= 0.5
+                                short_signal = (
+                                    symbol_signal_value > 0
+                                    or category == DataCache.Category.NEGATIVE
+                                )
+                            elif (
+                                self.sentiment_strategy_version
+                                == self.StrategyVersion.SENTIMENT_V1
+                            ):
+                                # # SENTIMENT MEAN REVERSION V1
+                                # Category dependent long/short signals
+                                long_signal = (
+                                    symbol_signal_value < -1
+                                    and category
+                                    == DataCache.Category.EXTREMELY_POSITIVE
+                                )
+                                long_signal = long_signal or (
+                                    symbol_signal_value < -1.5
+                                    and category
+                                    == DataCache.Category.VERY_POSITIVE
+                                )
+                                long_signal = long_signal or (
+                                    symbol_signal_value < -2
+                                    and category == DataCache.Category.POSITIVE
+                                )
 
+                                short_signal = (
+                                    category == DataCache.Category.NEGATIVE
+                                )
+                                short_signal = short_signal or (
+                                    symbol_signal_value > 1.5
+                                    and DataCache.Category.NEUTRAL
+                                )
+                                short_signal = short_signal or (
+                                    symbol_signal_value > 2
+                                    and DataCache.Category.POSITIVE
+                                )
+                            else:
+                                raise ValueError(
+                                    f"Invalid sentiment_strategy_version: {self.sentiment_strategy_version}"
+                                )
+                        else:
+                            # # NO SENTIMENT MEAN REVERSION
+                            long_signal = symbol_signal_value < 0
+                            short_signal = symbol_signal_value > 0
+
+                        if not long_signal and not (
+                            self.do_short and short_signal
+                        ):
+                            continue
+
+                        if short_signal and self.short_adj_fraction:
+                            trade_size *= self.short_adj_fraction
+
+                        if self.do_scale_trade_to_etf_vol:
+                            vol_ratio = index_vol / symbol_vol
+                            trade_size *= vol_ratio
+
+                        symbol_signal_value = -1 if short_signal else 1
+
+                        signal = self._create_signal(
+                            symbol_signal_value,
+                            trade_size,
+                            symbol,
+                            timestamp,
+                            release,
+                        )
+                        signals.append(signal)
+
+                        if self.do_hedge:
                             signal = self._create_signal(
-                                symbol_signal_value,
-                                trade_size,
-                                symbol,
+                                -1
+                                * symbol_signal_value,  # flip the sign of the return to trade the opposite direction
+                                trade_size * beta,
+                                IBB_SYMBOL,
                                 timestamp,
                                 release,
                             )
                             signals.append(signal)
 
-                            if (
-                                self.hedge_strategy
-                                and index_daily_ohlc is not None
-                            ):
-                                signal = self._create_signal(
-                                    -1
-                                    * symbol_signal_value,  # flip the sign of the return to trade the opposite direction
-                                    trade_size * beta,
-                                    IBB_SYMBOL,
-                                    timestamp,
-                                    release,
-                                )
-                                signals.append(signal)
+                        self.observed_releases.add(title)
 
-                            self.observed_releases.add(title)
-
-                            logger.info(
-                                "{} Observed Positive ft.Signal Headline: {} and Produced an Output ft.Signal {} on {}".format(
-                                    self.strategy_config["config_name"],
-                                    title,
-                                    signal,
-                                    timestamp,
-                                )
+                        logger.info(
+                            "{} Observed Positive ft.Signal Headline: {} and Produced an Output ft.Signal {} on {} with Category {}".format(
+                                self.strategy_config["config_name"],
+                                title,
+                                signal,
+                                timestamp,
+                                category,
                             )
+                        )
 
-            return signals
-        return []
+        return signals
 
     def _create_signal(
         self, symbol_signal_value, trade_size, symbol, timestamp, release
     ):
-        signal_type = ft.SignalType.Z_SCORE_LONG
-        if self.include_short_trades and symbol_signal_value > 0:
-            signal_type = ft.SignalType.Z_SCORE_SHORT
+        signal_type = (
+            ft.SignalType.Z_SCORE_LONG
+            if symbol_signal_value > 0
+            else ft.SignalType.Z_SCORE_SHORT
+        )
 
         signal: ft.Signal = ft.Signal(
             timestamp,
@@ -278,76 +367,79 @@ class StrategyBiotechNews(StrategyBase):
             self.strategy_config["config_name"],
         )
 
+        # Log recent backtest information
         self.short_trade_counter += (
             1 if signal_type == ft.SignalType.Z_SCORE_SHORT else 0
         )
         self.long_trade_counter += (
             1 if signal_type == ft.SignalType.Z_SCORE_LONG else 0
         )
-
         logger.info(
-            "{} Observed Signal Headline: {} and Produced an Output ft.Signal {} on {}".format(
+            "{} Observed Signal Headline: {} on {}".format(
                 self.strategy_config["config_name"],
                 release["Title"],
-                signal,
                 timestamp,
             )
         )
         logger.info("Signal: {}".format(signal))
-        logger.info("Signal Value: {}".format(symbol_signal_value))
         logger.info("Long Trade Counter: {}".format(self.long_trade_counter))
         logger.info("Short Trade Counter: {}".format(self.short_trade_counter))
         return signal
 
     def _check_conditions_for_symbol(
-        self,
-        symbol,
-        symbol_daily_ohlc,
-        symbol_returns_window,
-        returns_window_beta_adj_z,
+        self, symbol, symbol_daily_ohlc, signal_value
     ):
         return (
-            not self._check_blacklisted_symbols(symbol)
-            and StrategyBiotechNews._check_symbol_volume(symbol_daily_ohlc)
-            and self._check_returns_window(symbol_returns_window)
-            and self._check_returns_window_beta_adj_z(
-                returns_window_beta_adj_z
-            )
+            self._check_not_blacklisted_symbol(symbol)
+            and StrategyBiotechNews._check_symbol_has_volume(symbol_daily_ohlc)
+            and self._check_signal_strength(signal_value)
             and self._check_weighted_volume(symbol_daily_ohlc)
         )
 
     def _check_conditions_for_release(self, release, timestamp):
-        title = release["Title"]
-        contains_relevant_text: bool = StrategyBiotechNews._check_relevance(
-            title, self.text_filters
+        title, body, created_at = (
+            release["Title"],
+            release["Body"],
+            release["Created"],
         )
-
-        during_valid_hours: bool = True
-        if self.exclude_intraday:
-            # Remove events that are during trading hours
-            date_obj = datetime.strptime(
-                release["Created"], "%a, %d %b %Y %H:%M:%S %z"
+        contains_relevant_primary_title_text: bool = (
+            StrategyBiotechNews._check_relevance(
+                title, self.primary_title_text_filters
             )
-            hour = date_obj.hour
-            during_valid_hours = hour < 9 or hour > 16
+        )
+        contains_relevant_secondary_title_text: bool = (
+            StrategyBiotechNews._check_relevance(
+                title, self.secondary_title_text_filters
+            )
+        )
+        contains_relevant_body_text: bool = (
+            StrategyBiotechNews._check_relevance(body, self.body_text_filters)
+        )
 
         return (
-            not self._check_release_already_observed(title)
-            and during_valid_hours
-            and contains_relevant_text
-            and self._check_release_time(release, timestamp)
+            self._check_release_not_observed(title)
+            and (
+                self.do_intraday
+                or StrategyBiotechNews._check_not_intraday(created_at)
+            )
+            and contains_relevant_primary_title_text
+            and (
+                contains_relevant_body_text
+                or contains_relevant_secondary_title_text
+            )
+            and self._check_release_is_prev_timestamp(release, timestamp)
         )
 
-    def _check_release_time(self, release, timestamp):
+    def _check_release_is_prev_timestamp(self, release, timestamp):
         return release["Timestamp"] == self.global_config["calendar"].nearest(
             timestamp, "before"
         )
 
-    def _check_release_already_observed(self, title):
-        return title in self.observed_releases
+    def _check_release_not_observed(self, title):
+        return title not in self.observed_releases
 
-    def _check_blacklisted_symbols(self, symbol):
-        return symbol.value in self.blacklisted_symbols
+    def _check_not_blacklisted_symbol(self, symbol):
+        return symbol.value not in self.blacklisted_symbols
 
     def _check_weighted_volume(self, symbol_daily_ohlc):
         weighted_volume = (
@@ -356,61 +448,26 @@ class StrategyBiotechNews(StrategyBase):
         ).mean()
 
         return (
-            self.min_prev_daily_volume
+            self.min_avg_daily_volume
             <= weighted_volume
-            <= self.max_prev_daily_volume
+            <= self.max_avg_daily_volume
         )
 
-    def _check_returns_window(self, returns_window):
-        if (
-            self.returns_window_leq_bound is None
-            and self.returns_window_geq_bound is None
-        ):
+    def _check_signal_strength(self, signal_value):
+        if self.signal_leq_bound is None and self.signal_geq_bound is None:
             return True
         elif (
-            self.returns_window_geq_bound is not None
-            and self.returns_window_leq_bound is None
+            self.signal_geq_bound is not None and self.signal_leq_bound is None
         ):
-            return returns_window > self.returns_window_geq_bound
+            return signal_value > self.signal_geq_bound
         elif (
-            self.returns_window_leq_bound is not None
-            and self.returns_window_geq_bound is None
+            self.signal_leq_bound is not None and self.signal_geq_bound is None
         ):
-            return returns_window < self.returns_window_leq_bound
+            return signal_value < self.signal_leq_bound
         else:
             return (
-                returns_window < self.returns_window_leq_bound
-                or returns_window > self.returns_window_geq_bound
-            )
-
-    def _check_returns_window_beta_adj_z(self, returns_window_beta_adj_z):
-        if (
-            self.returns_window_beta_adj_z_leq_bound is None
-            and self.returns_window_beta_adj_z_geq_bound is None
-        ):
-            return True
-        elif (
-            self.returns_window_beta_adj_z_geq_bound is not None
-            and self.returns_window_beta_adj_z_leq_bound is None
-        ):
-            return (
-                returns_window_beta_adj_z
-                > self.returns_window_beta_adj_z_geq_bound
-            )
-        elif (
-            self.returns_window_beta_adj_z_leq_bound is not None
-            and self.returns_window_beta_adj_z_geq_bound is None
-        ):
-            return (
-                returns_window_beta_adj_z
-                < self.returns_window_beta_adj_z_leq_bound
-            )
-        else:
-            return (
-                returns_window_beta_adj_z
-                < self.returns_window_beta_adj_z_leq_bound
-                or returns_window_beta_adj_z
-                > self.returns_window_beta_adj_z_geq_bound
+                signal_value < self.signal_leq_bound
+                or signal_value > self.signal_geq_bound
             )
 
     def _trailing_n_day_open_to_close_return(self, x, n=1):
@@ -427,44 +484,47 @@ class StrategyBiotechNews(StrategyBase):
         data_returns_window = self._trailing_n_day_open_to_close_return(
             data_ohlc, n=self.signal_window_size
         )
-        data_returns_series = self.calc_ret_series(data_ohlc)
-        data_volatility = self.calculate_volatility(data_returns_series)
-        return data_returns_window, data_returns_series, data_volatility
+        data_returns_series = StrategyBiotechNews._calc_ret_series(data_ohlc)
+        data_vol = StrategyBiotechNews._calculate_vol(data_returns_series)
+        return data_returns_window, data_returns_series, data_vol
 
     @staticmethod
-    def _check_symbol_volume(symbol_daily_ohlc):
+    def _check_not_intraday(created_ts):
+        # Remove events that are during trading hours
+        date_obj = datetime.strptime(created_ts, "%a, %d %b %Y %H:%M:%S %z")
+        hour = date_obj.hour
+        during_valid_hours = hour < 9 or hour > 16
+        return during_valid_hours
+
+    @staticmethod
+    def _check_symbol_has_volume(symbol_daily_ohlc):
         if "Volume" not in symbol_daily_ohlc:
             return False
         return True
 
     @staticmethod
-    def _check_relevance(title: str, text_filters: List[str]) -> bool:
+    def _check_relevance(
+        title: str, primary_title_text_filters: List[str]
+    ) -> bool:
         """
         Check if the press release title is relevant to the text filters.
 
         :param title: Press release title.
-        :param text_filters: List of text filters.
+        :param primary_title_text_filters: List of text filters.
         :return: True if relevant, False otherwise.
         """
-        for text_filter in text_filters:
+        for text_filter in primary_title_text_filters:
             if text_filter.upper() in title.upper():
                 return True
 
         return False
 
     @staticmethod
-    def calculate_volatility(returns):
+    def _calculate_vol(returns):
         return np.std(returns) * 100
 
     @staticmethod
-    def calculate_correlation(asset_a_prices, asset_b_prices):
-        returns_a = np.diff(asset_a_prices) / asset_a_prices[:-1]
-        returns_b = np.diff(asset_b_prices) / asset_b_prices[:-1]
-        correlation = np.corrcoef(returns_a, returns_b)[0, 1]
-        return correlation
-
-    @staticmethod
-    def calculate_beta(stock_returns, index_returns):
+    def _calculate_beta(stock_returns, index_returns):
         covariance = np.cov(stock_returns, index_returns)
         stock_index_covariance = covariance[0, 1]
         index_variance = covariance[1, 1]
@@ -473,5 +533,5 @@ class StrategyBiotechNews(StrategyBase):
         return beta
 
     @staticmethod
-    def calc_ret_series(x):
+    def _calc_ret_series(x):
         return np.diff(x["Close"]) / x["Close"][:-1]

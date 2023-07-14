@@ -3,9 +3,9 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 import pytest
-from quantgpt.financial_tools import types as ft
 
 from quantgpt.core.strategy.biotech_news import StrategyBiotechNews
+from quantgpt.financial_tools import types as ft
 
 # Custom Types
 Release = Dict[str, Union[str, Any]]
@@ -44,12 +44,12 @@ def strategy_config():
             {
                 "asset_class": ft.AssetClass.US_EQUITY,
                 "data_type": ft.DataType.DAILY_OHLC,
-                "provider": ft.DataProviderName.POLYGON,
+                "provider": ft.DataProviderName.TEST_EQUITIES,
             },
             {
                 "asset_class": ft.AssetClass.US_EQUITY,
                 "data_type": ft.DataType.NEWS,
-                "provider": ft.DataProviderName.POLYGON,
+                "provider": ft.DataProviderName.TEST_EQUITIES,
             },
         ],
         "trade_config": {

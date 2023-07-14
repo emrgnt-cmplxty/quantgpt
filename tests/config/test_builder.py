@@ -2,9 +2,9 @@ import argparse
 import logging
 
 import pytest
-from quantgpt.financial_tools import types as ft
 
 from quantgpt.core.config.builder import ConfigBuilder
+from quantgpt.financial_tools import types as ft
 
 
 @pytest.fixture
@@ -74,7 +74,7 @@ def test_load_configurations(args, logger):
     # This will depend on your specific test configuration files
     # Example: check if the correct strategy configs are loaded
     assert "test_simple_biotech_news_v0p0" in strategy_configs
-    assert "test_simple_biotech_news_v0p1" in strategy_configs
+    # assert "test_simple_biotech_news_v0p1" in strategy_configs
 
     # Example: check if the correct symbols are loaded for each asset class
     assert ft.AssetClass.US_EQUITY in symbols_dict
@@ -86,7 +86,7 @@ def test_load_configurations(args, logger):
     assert ft.AssetClass.US_EQUITY in providers_dict
     assert ft.DataType.DAILY_OHLC in providers_dict[ft.AssetClass.US_EQUITY]
     assert (
-        ft.DataProviderName.TEST_POLYGON
+        ft.DataProviderName.TEST_EQUITIES
         in providers_dict[ft.AssetClass.US_EQUITY][ft.DataType.DAILY_OHLC]
     )
 

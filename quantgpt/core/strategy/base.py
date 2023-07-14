@@ -1,9 +1,8 @@
 from typing import Dict, List
 
-from quantgpt.financial_tools import types as ft
-
 from quantgpt.core.data.processor import DataProcessor
 from quantgpt.core.portfolio.processor import PortfolioProcessor
+from quantgpt.financial_tools import types as ft
 
 
 class StrategyBase:

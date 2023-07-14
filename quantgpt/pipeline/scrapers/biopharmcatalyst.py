@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Union
 
 from bs4 import BeautifulSoup
+from selenium import webdriver
+
 from quantgpt.financial_tools import types as ft
 from quantgpt.financial_tools.utils import (
     build_symbols,
@@ -13,8 +15,6 @@ from quantgpt.financial_tools.utils import (
     convert_dt_to_est_fixed_time,
     convert_est_dt_to_unix_timestamp,
 )
-from selenium import webdriver
-
 from quantgpt.pipeline.data_handler import DataHandler
 from quantgpt.pipeline.scrapers.data_scraper import DataScraper
 
@@ -41,7 +41,7 @@ def map_to_appropriate_market_close_unix(
     return calendar.nearest(convert_est_dt_to_unix_timestamp(dt), "before")
 
 
-class BiopharmCatalystDataScraper(DataScraper):
+class scrapedDataScraper(DataScraper):
     def __init__(
         self,
         data_handler: DataHandler,
@@ -79,7 +79,7 @@ class BiopharmCatalystDataScraper(DataScraper):
 
     def get_news(self, ticker, page=0):
         self.driver.get(
-            f"https://www.biopharmcatalyst.com/api/news/{ticker}?page={page}"
+            f"https://www.scraped.com/api/news/{ticker}?page={page}"
         )
         u = self.driver.page_source
         try:

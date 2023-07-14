@@ -3,7 +3,6 @@ from typing import Any, Dict, List, Optional, TypedDict, Union
 
 import pandas as pd
 
-from quantgpt.financial_tools.untyped_utils import home_path
 from quantgpt.financial_tools.types.basic_types import (
     Path,
     StrategyName,
@@ -19,6 +18,8 @@ from quantgpt.financial_tools.types.enums import (
     TradingMode,
     TradingTimes,
 )
+from quantgpt.financial_tools.untyped_utils import home_path
+
 from .symbol import Symbol
 
 Config = Dict[str, Union[str, int, float, None, "Config"]]

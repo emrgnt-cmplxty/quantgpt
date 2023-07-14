@@ -1,0 +1,39 @@
+{
+    "name": "StrategyBiotechNews",
+    "symbol_sources": [
+        {
+            "asset_class": "us_equity",
+            "sub_class": "test_0"
+        }
+    ],
+    "data_providers": [
+        {
+            "asset_class": "us_equity",
+            "data_type": "daily_ohlc",
+            "provider": "test_equities"
+        },
+        {
+            "asset_class": "us_equity",
+            "data_type": "news",
+            "provider": "test_scraped"
+        }
+    ],
+    "trade_config": {
+        "starting_cash": 50000,
+        "us_equity": {
+            "type": "simple_fixed",
+            /* allocate 1/4 of initial cash with each trade */
+            "trade_size_in_dollars": 12500,
+            "holding_period": "30_days"
+        }
+    },
+    "specific_config": {
+        "min_avg_daily_volume": 100000,
+        "max_avg_daily_volume": 1000000,
+        /* busted tickers, likely because of acq or failure */
+        "blacklisted_symbols": [],
+        "primary_title_text_filters": [
+            "acceptance"
+        ]
+    }
+}

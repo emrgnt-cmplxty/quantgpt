@@ -4,7 +4,7 @@
     // The mode for data storage
     "data_mode": "csv",
     // The primary source of the data for this config
-    "data_source": "biopharmcatalyst",
+    "data_source": "scraped",
     // The asset class the data for this config
     "data_asset_class": "us_equity",
     "other_settings": {

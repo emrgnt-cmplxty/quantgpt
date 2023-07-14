@@ -1,8 +1,8 @@
 import pandas as pd
 import pytest
-from quantgpt.financial_tools import types as ft
 
 from quantgpt.core.performance.manager import PerformanceManager
+from quantgpt.financial_tools import types as ft
 
 
 @pytest.fixture

@@ -3,8 +3,8 @@ from typing import List, Optional, Tuple, cast
 
 import pandas as pd
 
-from quantgpt.financial_tools.untyped_utils import home_path
 from quantgpt.financial_tools.types.enums import AssetClass
+from quantgpt.financial_tools.untyped_utils import home_path
 
 
 class SymbolChecker:

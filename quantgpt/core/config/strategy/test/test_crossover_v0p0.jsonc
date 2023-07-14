@@ -10,7 +10,7 @@
         {
             "asset_class": "us_equity",
             "data_type": "daily_ohlc",
-            "provider": "test_polygon"
+            "provider": "test_equities"
         }
     ],
     "trade_config": {

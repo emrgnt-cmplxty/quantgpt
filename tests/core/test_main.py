@@ -1,10 +1,10 @@
 import argparse
 
 import pytest
-from quantgpt.financial_tools import types as ft
 
 import quantgpt.core as core
 from quantgpt.core.main import main
+from quantgpt.financial_tools import types as ft
 
 
 @pytest.fixture
