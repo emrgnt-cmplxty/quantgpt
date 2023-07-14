@@ -1,0 +1,58 @@
+{
+    "name": "StrategyBiotechNews",
+    "symbol_sources": [
+        {
+            "asset_class": "us_equity",
+            "sub_class": "biotech"
+        }
+    ],
+    "data_providers": [
+        {
+            "asset_class": "us_equity",
+            "data_type": "daily_ohlc",
+            "provider": "test_equities"
+        },
+        {
+            "asset_class": "us_equity",
+            "data_type": "news",
+            "provider": "test_scraped"
+        }
+    ],
+    "trade_config": {
+        "starting_cash": 50000,
+        "us_equity": {
+            "type": "simple_fixed",
+            /* allocate 1/4 of initial cash with each trade */
+            "trade_size_in_dollars": 12500,
+            "holding_period": "14_days"
+        }
+    },
+    "specific_config": {
+        "min_avg_daily_volume": 1e6,
+        "max_avg_daily_volume": 500e9,
+        "signal_leq_bound": -3,
+        "signal_geq_bound": 2,
+        "blacklisted_symbols": [],
+        "primary_title_text_filters": [
+            "topline",
+            "clincal",
+            "trial",
+            "study",
+            "phase",
+            "findings",
+            "fda",
+            "approve",
+            "accepts",
+            "publish",
+            "positive",
+            "U.S. Food and Drug Administration"
+        ],
+        "do_short": true,
+        "do_hedge": true,
+        /* Note, the next option will change the the trade size to no longer be simple fixed */
+        /* instead, the trade size will be scaled by the ratio of the index ETF to the traded asset volatility */
+        "do_scale_trade_to_etf_vol": true,
+        "do_intraday": false,
+        "signal_window_size": 20
+    }
+}

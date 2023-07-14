@@ -84,6 +84,7 @@ multidict==6.0.4
 mypy==1.1.1
 mypy-extensions==1.0.0
 numpy==1.24.2
+openai==0.27.8
 outcome==1.2.0
 packaging==23.0
 pandas==1.5.3
